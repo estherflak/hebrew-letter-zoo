@@ -1,832 +1,200 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hebrew Letter Zoo 🦁</title>
+<title>גן החיות של האותיות 🦁</title>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --sky: #fff9f0;
-    --grass: #4caf7d;
-    --sun: #ffcc02;
-    --coral: #ff6b6b;
-    --blue: #4ecdc4;
-    --purple: #a855f7;
-    --orange: #ff9f43;
-    --pink: #fd79a8;
-    --card-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    --sky: #fff9f0; --grass: #4caf7d; --sun: #ffcc02;
+    --coral: #ff6b6b; --blue: #4ecdc4; --purple: #a855f7;
+    --orange: #ff9f43; --pink: #fd79a8;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Nunito', sans-serif;
-    background: var(--sky);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+  body { font-family: 'Nunito', sans-serif; background: var(--sky); min-height: 100vh; overflow-x: hidden; }
 
-  /* ── CLOUDS BG ── */
-  .clouds {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0;
-    overflow: hidden;
-  }
-  .cloud {
-    position: absolute;
-    background: white;
-    border-radius: 50px;
-    opacity: 0.6;
-    animation: drift linear infinite;
-  }
-  .cloud::before, .cloud::after {
-    content: ''; position: absolute; background: white; border-radius: 50%;
-  }
-  .cloud::before { width: 60%; height: 150%; top: -40%; left: 15%; }
-  .cloud::after  { width: 40%; height: 120%; top: -30%; right: 10%; }
-  @keyframes drift { from { transform: translateX(-200px); } to { transform: translateX(110vw); } }
+  .clouds { position: fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0; overflow:hidden; }
+  .cloud { position:absolute; background:white; border-radius:50px; opacity:0.6; animation:drift linear infinite; }
+  .cloud::before,.cloud::after { content:''; position:absolute; background:white; border-radius:50%; }
+  .cloud::before { width:60%; height:150%; top:-40%; left:15%; }
+  .cloud::after  { width:40%; height:120%; top:-30%; right:10%; }
+  @keyframes drift { from{transform:translateX(-200px)} to{transform:translateX(110vw)} }
 
-  /* ── HEADER ── */
-  header {
-    position: relative; z-index: 10;
-    text-align: center;
-    padding: 28px 20px 16px;
-  }
-  header h1 {
-    font-family: 'Fredoka One', cursive;
-    font-size: clamp(2rem, 6vw, 3.2rem);
-    color: #2d3436;
-    text-shadow: 3px 3px 0 var(--sun);
-    letter-spacing: 1px;
-  }
-  header p { color: #636e72; font-size: 1.05rem; font-weight: 600; margin-top: 4px; }
+  header { position:relative; z-index:10; text-align:center; padding:28px 20px 16px; }
+  header h1 { font-family:'Fredoka One',cursive; font-size:clamp(2rem,6vw,3.2rem); color:#2d3436; text-shadow:3px 3px 0 var(--sun); }
+  header p  { color:#636e72; font-size:1.05rem; font-weight:600; margin-top:4px; }
 
   /* ── TABS ── */
-  .tabs {
-    display: flex; justify-content: center; gap: 12px;
-    padding: 0 20px 24px;
-    position: relative; z-index: 10;
-    flex-wrap: wrap;
-  }
-  .tab-btn {
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.05rem;
-    padding: 10px 28px;
-    border: 3px solid #2d3436;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: all 0.2s;
-    background: white;
-    color: #2d3436;
-    box-shadow: 3px 3px 0 #2d3436;
-  }
-  .tab-btn:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 #2d3436; }
-  .tab-btn.active { background: var(--sun); transform: translate(-2px,-2px); box-shadow: 5px 5px 0 #2d3436; }
+  .tabs { display:flex; justify-content:center; gap:12px; padding:0 20px 24px; position:relative; z-index:10; flex-wrap:wrap; }
+  .tab-btn { font-family:'Fredoka One',cursive; font-size:1rem; padding:10px 24px; border:3px solid #2d3436; border-radius:50px; cursor:pointer; background:white; color:#2d3436; box-shadow:3px 3px 0 #2d3436; transition:all 0.2s; }
+  .tab-btn:hover { transform:translate(-2px,-2px); box-shadow:5px 5px 0 #2d3436; }
+  .tab-btn.active { background:var(--sun); transform:translate(-2px,-2px); box-shadow:5px 5px 0 #2d3436; }
 
-  /* ── VIEWS ── */
-  .view { display: none; position: relative; z-index: 10; padding: 0 16px 60px; }
-  .view.active { display: block; }
+  .view { display:none; position:relative; z-index:10; padding:0 16px 60px; }
+  .view.active { display:block; }
 
   /* ── ZOO GRID ── */
-  .zoo-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 16px;
-    max-width: 1100px;
-    margin: 0 auto;
-    direction: rtl;
-  }
-  .letter-card {
-    background: white;
-    border: 3px solid #2d3436;
-    border-radius: 20px;
-    padding: 18px 12px 14px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.18s;
-    box-shadow: 4px 4px 0 #2d3436;
-    position: relative;
-    overflow: hidden;
-  }
-  .letter-card:hover {
-    transform: translate(-3px,-3px) rotate(-1deg);
-    box-shadow: 7px 7px 0 #2d3436;
-  }
-  .letter-card .emoji { font-size: 2.6rem; display: block; margin-bottom: 4px; }
-  .letter-card .heb {
-    font-family: 'Fredoka One', cursive;
-    font-size: 2.2rem;
-    color: #2d3436;
-    direction: rtl;
-    line-height: 1;
-  }
-  .letter-card .name { font-size: 0.78rem; font-weight: 800; color: #636e72; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
-  .letter-card .animal-heb {
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.15rem;
-    color: #2d3436;
-    direction: rtl;
-    margin-top: 4px;
-    line-height: 1.1;
-  }
-  .letter-card .animal-en-hint {
-    font-size: 0.68rem;
-    font-weight: 700;
-    color: #b2bec3;
-    margin-top: 1px;
-    line-height: 1.2;
-  }
-  .letter-card .sound-badge {
-    display: inline-block;
-    background: var(--sun);
-    border: 2px solid #2d3436;
-    border-radius: 20px;
-    font-size: 0.82rem;
-    font-weight: 800;
-    padding: 2px 10px;
-    margin-top: 6px;
-    color: #2d3436;
-  }
+  .zoo-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:16px; max-width:1100px; margin:0 auto; direction:rtl; }
+  .letter-card { background:white; border:3px solid #2d3436; border-radius:20px; padding:18px 12px 14px; text-align:center; cursor:pointer; transition:all 0.18s; box-shadow:4px 4px 0 #2d3436; position:relative; overflow:hidden; }
+  .letter-card:hover { transform:translate(-3px,-3px) rotate(-1deg); box-shadow:7px 7px 0 #2d3436; }
+  .letter-card .emoji { font-size:2.6rem; display:block; margin-bottom:4px; }
+  .letter-card .heb   { font-family:'Fredoka One',cursive; font-size:2.2rem; color:#2d3436; direction:rtl; line-height:1; }
+  .letter-card .heb-final { font-family:'Fredoka One',cursive; font-size:1.2rem; color:#b2bec3; direction:rtl; line-height:1; margin-top:2px; }
+  .letter-card .name  { font-size:0.78rem; font-weight:800; color:#636e72; text-transform:uppercase; letter-spacing:1px; margin-top:2px; }
+  .letter-card .animal-heb { font-family:'Fredoka One',cursive; font-size:1.15rem; color:#2d3436; direction:rtl; margin-top:4px; line-height:1.1; }
+  .letter-card .animal-en-hint { font-size:0.68rem; font-weight:700; color:#b2bec3; margin-top:1px; }
+  .letter-card .sound-badge { display:inline-block; background:var(--sun); border:2px solid #2d3436; border-radius:20px; font-size:0.82rem; font-weight:800; padding:2px 10px; margin-top:6px; color:#2d3436; }
+  .letter-card:nth-child(5n+1){background:#fff3cd} .letter-card:nth-child(5n+2){background:#d1f2eb}
+  .letter-card:nth-child(5n+3){background:#fde8e8} .letter-card:nth-child(5n+4){background:#e8e4ff}
+  .letter-card:nth-child(5n+5){background:#e0f5fb}
+  .letter-card .sound-ripple { position:absolute; inset:0; border-radius:20px; background:radial-gradient(circle,rgba(255,204,2,0.5) 0%,transparent 70%); pointer-events:none; opacity:0; }
+  .letter-card.playing .sound-ripple { animation:rippleOut 0.7s ease-out forwards; }
+  @keyframes rippleOut { 0%{opacity:0.8;transform:scale(0.6)} 100%{opacity:0;transform:scale(1.3)} }
 
   /* ── MODAL ── */
-  .modal-overlay {
-    display: none;
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.5);
-    z-index: 100;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-  }
-  .modal-overlay.open { display: flex; }
-  .modal {
-    background: white;
-    border: 4px solid #2d3436;
-    border-radius: 28px;
-    padding: 32px 28px 28px;
-    max-width: 440px;
-    width: 100%;
-    box-shadow: 8px 8px 0 #2d3436;
-    position: relative;
-    animation: popIn 0.3s cubic-bezier(.34,1.56,.64,1);
-  }
-  @keyframes popIn { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-  .modal-close {
-    position: absolute; top: 14px; right: 18px;
-    font-size: 1.6rem; cursor: pointer; line-height: 1;
-    color: #b2bec3; transition: color 0.15s;
-  }
-  .modal-close:hover { color: var(--coral); }
-  .modal-emoji { font-size: 5rem; text-align: center; display: block; margin-bottom: 8px; }
-  .modal-heb {
-    font-family: 'Fredoka One', cursive;
-    font-size: 5rem;
-    text-align: center;
-    direction: rtl;
-    color: #2d3436;
-    line-height: 1;
-  }
-  .modal-title {
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.6rem;
-    text-align: center;
-    margin-top: 4px;
-    color: #2d3436;
-  }
-  .modal-sound {
-    text-align: center;
-    margin: 10px 0 14px;
-  }
-  .modal-sound span {
-    background: var(--sun);
-    border: 2px solid #2d3436;
-    border-radius: 20px;
-    font-size: 1rem;
-    font-weight: 800;
-    padding: 4px 16px;
-    color: #2d3436;
-  }
-  .modal-story {
-    background: #fff9ec;
-    border: 2px dashed #ffcc02;
-    border-radius: 16px;
-    padding: 14px 16px;
-    font-size: 1rem;
-    line-height: 1.55;
-    color: #2d3436;
-    font-weight: 600;
-  }
-  .modal-move {
-    margin-top: 12px;
-    background: #f0fdf8;
-    border: 2px dashed var(--grass);
-    border-radius: 16px;
-    padding: 12px 16px;
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: #2d3436;
-  }
-  .modal-move::before { content: "🕹️ Body Move: "; }
-
-  /* ── SPEAK BUTTON ── */
-  .speak-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    width: 100%;
-    margin: 12px 0 4px;
-    padding: 13px 20px;
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.15rem;
-    background: var(--coral);
-    color: white;
-    border: 3px solid #2d3436;
-    border-radius: 50px;
-    box-shadow: 4px 4px 0 #2d3436;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .speak-btn:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #2d3436; }
-  .speak-btn:active { transform: translate(1px,1px); box-shadow: 2px 2px 0 #2d3436; }
-  .speak-btn.speaking { background: var(--grass); animation: pulse 0.6s ease-in-out infinite alternate; }
-  @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.04) translate(-2px,-2px); } }
-
-  /* sound ripple on card */
-  .letter-card .sound-ripple {
-    position: absolute; inset: 0;
-    border-radius: 20px;
-    background: radial-gradient(circle, rgba(255,204,2,0.5) 0%, transparent 70%);
-    pointer-events: none;
-    opacity: 0;
-    transform: scale(0.5);
-    transition: opacity 0.05s, transform 0.05s;
-  }
-  .letter-card.playing .sound-ripple {
-    opacity: 1; transform: scale(1);
-    animation: rippleOut 0.7s ease-out forwards;
-  }
-  @keyframes rippleOut {
-    0%   { opacity: 0.8; transform: scale(0.6); }
-    100% { opacity: 0;   transform: scale(1.3); }
-  }
+  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:100; align-items:center; justify-content:center; padding:20px; }
+  .modal-overlay.open { display:flex; }
+  .modal { background:white; border:4px solid #2d3436; border-radius:28px; padding:32px 28px 28px; max-width:440px; width:100%; box-shadow:8px 8px 0 #2d3436; position:relative; animation:popIn 0.3s cubic-bezier(.34,1.56,.64,1); }
+  @keyframes popIn { from{transform:scale(0.7);opacity:0} to{transform:scale(1);opacity:1} }
+  .modal-close { position:absolute; top:14px; left:18px; font-size:1.6rem; cursor:pointer; color:#b2bec3; }
+  .modal-close:hover { color:var(--coral); }
+  .modal-emoji  { font-size:5rem; text-align:center; display:block; margin-bottom:8px; }
+  .modal-heb    { font-family:'Fredoka One',cursive; font-size:5rem; text-align:center; direction:rtl; color:#2d3436; line-height:1; }
+  .modal-title  { font-family:'Fredoka One',cursive; font-size:1.6rem; text-align:center; margin-top:4px; color:#2d3436; direction:rtl; }
+  .modal-sound  { text-align:center; margin:10px 0 4px; }
+  .modal-sound span { background:var(--sun); border:2px solid #2d3436; border-radius:20px; font-size:1rem; font-weight:800; padding:4px 16px; }
+  .speak-btn { display:flex; align-items:center; justify-content:center; gap:8px; width:100%; margin:12px 0 14px; padding:13px 20px; font-family:'Fredoka One',cursive; font-size:1.15rem; background:var(--coral); color:white; border:3px solid #2d3436; border-radius:50px; box-shadow:4px 4px 0 #2d3436; cursor:pointer; transition:all 0.15s; }
+  .speak-btn:hover { transform:translate(-2px,-2px); box-shadow:6px 6px 0 #2d3436; }
+  .speak-btn.speaking { background:var(--grass); animation:pulse 0.6s ease-in-out infinite alternate; }
+  @keyframes pulse { from{transform:scale(1)} to{transform:scale(1.04) translate(-2px,-2px)} }
+  .modal-story { background:#fff9ec; border:2px dashed #ffcc02; border-radius:16px; padding:14px 16px; font-size:1rem; line-height:1.55; color:#2d3436; font-weight:600; direction:rtl; }
+  .modal-move  { margin-top:12px; background:#f0fdf8; border:2px dashed var(--grass); border-radius:16px; padding:12px 16px; font-size:0.95rem; font-weight:700; color:#2d3436; direction:rtl; }
+  .modal-move::before { content:"🕹️ תנועת גוף: "; }
 
   /* ── GAME ── */
-  .game-container {
-    max-width: 680px;
-    margin: 0 auto;
-  }
-  .game-score-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: white;
-    border: 3px solid #2d3436;
-    border-radius: 20px;
-    padding: 14px 24px;
-    margin-bottom: 24px;
-    box-shadow: 4px 4px 0 #2d3436;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  .score-item { text-align: center; }
-  .score-label { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #b2bec3; }
-  .score-value { font-family: 'Fredoka One', cursive; font-size: 1.8rem; color: #2d3436; line-height: 1; }
-  .lives-display { font-size: 1.6rem; letter-spacing: 4px; }
-
-  .game-card {
-    background: white;
-    border: 4px solid #2d3436;
-    border-radius: 28px;
-    padding: 36px 28px 28px;
-    text-align: center;
-    box-shadow: 6px 6px 0 #2d3436;
-    margin-bottom: 20px;
-  }
-  .game-question { font-size: 1.1rem; font-weight: 800; color: #636e72; margin-bottom: 16px; }
-  .game-big-emoji { font-size: 5rem; display: block; margin-bottom: 6px; }
-  .game-big-heb {
-    font-family: 'Fredoka One', cursive;
-    font-size: 6rem;
-    color: #2d3436;
-    direction: rtl;
-    line-height: 1;
-    margin-bottom: 6px;
-  }
-  .game-animal-name {
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.8rem;
-    color: #2d3436;
-  }
-
-  .choices-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-top: 4px;
-  }
-  .choice-btn {
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.3rem;
-    padding: 16px 12px;
-    border: 3px solid #2d3436;
-    border-radius: 16px;
-    cursor: pointer;
-    transition: all 0.15s;
-    background: white;
-    color: #2d3436;
-    box-shadow: 3px 3px 0 #2d3436;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-  }
-  .choice-btn:hover:not(:disabled) { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 #2d3436; }
-  .choice-btn.correct { background: #d4efdf; border-color: var(--grass); box-shadow: 3px 3px 0 var(--grass); }
-  .choice-btn.wrong   { background: #fde8e8; border-color: var(--coral); box-shadow: 3px 3px 0 var(--coral); }
-  .choice-btn .choice-heb { font-size: 2rem; direction: rtl; }
-  .choice-btn .choice-name { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #b2bec3; }
-
-  .game-feedback {
-    min-height: 52px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.4rem;
-    color: #2d3436;
-    margin-bottom: 8px;
-  }
-
-  .game-modes {
-    display: flex; gap: 10px; justify-content: center; margin-bottom: 24px; flex-wrap: wrap;
-  }
-  .mode-btn {
-    font-family: 'Fredoka One', cursive;
-    font-size: 0.95rem;
-    padding: 8px 20px;
-    border: 2px solid #2d3436;
-    border-radius: 50px;
-    cursor: pointer;
-    background: white;
-    color: #2d3436;
-    box-shadow: 2px 2px 0 #2d3436;
-    transition: all 0.15s;
-  }
-  .mode-btn.active { background: var(--blue); color: white; }
-  .mode-btn:hover  { transform: translate(-1px,-1px); box-shadow: 3px 3px 0 #2d3436; }
-
-  .start-screen {
-    text-align: center;
-    padding: 40px 20px;
-  }
-  .start-screen .big-emoji { font-size: 6rem; display: block; margin-bottom: 16px; }
-  .start-screen h2 {
-    font-family: 'Fredoka One', cursive;
-    font-size: 2rem;
-    color: #2d3436;
-    margin-bottom: 10px;
-  }
-  .start-screen p { color: #636e72; font-weight: 600; font-size: 1.05rem; margin-bottom: 28px; }
-  .start-btn {
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.4rem;
-    padding: 16px 48px;
-    border: 4px solid #2d3436;
-    border-radius: 50px;
-    cursor: pointer;
-    background: var(--grass);
-    color: white;
-    box-shadow: 5px 5px 0 #2d3436;
-    transition: all 0.2s;
-  }
-  .start-btn:hover { transform: translate(-3px,-3px); box-shadow: 8px 8px 0 #2d3436; }
-
-  .result-screen { display: none; text-align: center; padding: 30px 20px; }
-  .result-screen.show { display: block; }
-  .result-screen h2 { font-family: 'Fredoka One', cursive; font-size: 2.4rem; color: #2d3436; margin-bottom: 10px; }
-  .result-score { font-family: 'Fredoka One', cursive; font-size: 4rem; color: var(--grass); }
-  .result-msg { font-weight: 700; font-size: 1.1rem; color: #636e72; margin: 10px 0 24px; }
-  .play-again-btn {
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.2rem;
-    padding: 14px 40px;
-    border: 3px solid #2d3436;
-    border-radius: 50px;
-    cursor: pointer;
-    background: var(--sun);
-    color: #2d3436;
-    box-shadow: 4px 4px 0 #2d3436;
-    transition: all 0.2s;
-  }
-  .play-again-btn:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #2d3436; }
-
-  /* color cycling for cards */
-  .letter-card:nth-child(5n+1)  { background: #fff3cd; }
-  .letter-card:nth-child(5n+2)  { background: #d1f2eb; }
-  .letter-card:nth-child(5n+3)  { background: #fde8e8; }
-  .letter-card:nth-child(5n+4)  { background: #e8e4ff; }
-  .letter-card:nth-child(5n+5)  { background: #e0f5fb; }
-
-  /* progress stars */
-  .progress-bar {
-    display: flex; justify-content: center; gap: 6px; flex-wrap: wrap;
-    margin-bottom: 16px;
-  }
-  .progress-dot {
-    width: 12px; height: 12px;
-    border-radius: 50%;
-    background: #dfe6e9;
-    border: 2px solid #b2bec3;
-    transition: all 0.3s;
-  }
-  .progress-dot.done { background: var(--sun); border-color: #e6b800; }
-  .progress-dot.current { background: var(--coral); border-color: #c0392b; transform: scale(1.3); }
-
-  @media (max-width: 500px) {
-    .zoo-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
-    .letter-card .heb { font-size: 1.8rem; }
-    .letter-card .emoji { font-size: 2rem; }
-    .choices-grid { grid-template-columns: 1fr 1fr; }
-  }
+  .game-container { max-width:680px; margin:0 auto; }
+  .game-score-bar { display:flex; justify-content:space-between; align-items:center; background:white; border:3px solid #2d3436; border-radius:20px; padding:14px 24px; margin-bottom:24px; box-shadow:4px 4px 0 #2d3436; flex-wrap:wrap; gap:10px; }
+  .score-item { text-align:center; }
+  .score-label { font-size:0.75rem; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:#b2bec3; }
+  .score-value { font-family:'Fredoka One',cursive; font-size:1.8rem; color:#2d3436; line-height:1; }
+  .lives-display { font-size:1.6rem; letter-spacing:4px; }
+  .game-card { background:white; border:4px solid #2d3436; border-radius:28px; padding:36px 28px 28px; text-align:center; box-shadow:6px 6px 0 #2d3436; margin-bottom:20px; }
+  .game-question { font-size:1.1rem; font-weight:800; color:#636e72; margin-bottom:16px; direction:rtl; }
+  .game-big-emoji { font-size:5rem; display:block; margin-bottom:6px; }
+  .game-big-heb   { font-family:'Fredoka One',cursive; font-size:6rem; color:#2d3436; direction:rtl; line-height:1; margin-bottom:6px; }
+  .game-animal-name { font-family:'Fredoka One',cursive; font-size:1.8rem; color:#2d3436; direction:rtl; }
+  .choices-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:4px; }
+  .choice-btn { font-family:'Fredoka One',cursive; font-size:1.3rem; padding:16px 12px; border:3px solid #2d3436; border-radius:16px; cursor:pointer; background:white; color:#2d3436; box-shadow:3px 3px 0 #2d3436; display:flex; flex-direction:column; align-items:center; gap:4px; transition:all 0.15s; }
+  .choice-btn:hover:not(:disabled) { transform:translate(-2px,-2px); box-shadow:5px 5px 0 #2d3436; }
+  .choice-btn.correct { background:#d4efdf; border-color:var(--grass); }
+  .choice-btn.wrong   { background:#fde8e8; border-color:var(--coral); }
+  .choice-btn .choice-heb  { font-size:2rem; direction:rtl; }
+  .choice-btn .choice-name { font-size:0.75rem; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:#b2bec3; }
+  .game-feedback { min-height:52px; display:flex; align-items:center; justify-content:center; font-family:'Fredoka One',cursive; font-size:1.4rem; color:#2d3436; margin-bottom:8px; direction:rtl; }
+  .game-modes { display:flex; gap:10px; justify-content:center; margin-bottom:24px; flex-wrap:wrap; }
+  .mode-btn { font-family:'Fredoka One',cursive; font-size:0.95rem; padding:8px 20px; border:2px solid #2d3436; border-radius:50px; cursor:pointer; background:white; color:#2d3436; box-shadow:2px 2px 0 #2d3436; transition:all 0.15s; }
+  .mode-btn.active { background:var(--blue); color:white; }
+  .mode-btn:hover  { transform:translate(-1px,-1px); box-shadow:3px 3px 0 #2d3436; }
+  .start-screen { text-align:center; padding:40px 20px; }
+  .start-screen .big-emoji { font-size:6rem; display:block; margin-bottom:16px; }
+  .start-screen h2 { font-family:'Fredoka One',cursive; font-size:2rem; color:#2d3436; margin-bottom:10px; direction:rtl; }
+  .start-screen p  { color:#636e72; font-weight:600; font-size:1.05rem; margin-bottom:28px; direction:rtl; }
+  .start-btn { font-family:'Fredoka One',cursive; font-size:1.4rem; padding:16px 48px; border:4px solid #2d3436; border-radius:50px; cursor:pointer; background:var(--grass); color:white; box-shadow:5px 5px 0 #2d3436; transition:all 0.2s; }
+  .start-btn:hover { transform:translate(-3px,-3px); box-shadow:8px 8px 0 #2d3436; }
+  .result-screen { display:none; text-align:center; padding:30px 20px; }
+  .result-screen.show { display:block; }
+  .result-screen h2 { font-family:'Fredoka One',cursive; font-size:2.4rem; color:#2d3436; margin-bottom:10px; }
+  .result-score { font-family:'Fredoka One',cursive; font-size:4rem; color:var(--grass); }
+  .result-msg   { font-weight:700; font-size:1.1rem; color:#636e72; margin:10px 0 24px; direction:rtl; }
+  .play-again-btn { font-family:'Fredoka One',cursive; font-size:1.2rem; padding:14px 40px; border:3px solid #2d3436; border-radius:50px; cursor:pointer; background:var(--sun); color:#2d3436; box-shadow:4px 4px 0 #2d3436; transition:all 0.2s; }
+  .play-again-btn:hover { transform:translate(-2px,-2px); box-shadow:6px 6px 0 #2d3436; }
+  .progress-bar { display:flex; justify-content:center; gap:6px; flex-wrap:wrap; margin-bottom:16px; }
+  .progress-dot { width:12px; height:12px; border-radius:50%; background:#dfe6e9; border:2px solid #b2bec3; transition:all 0.3s; }
+  .progress-dot.done { background:var(--sun); border-color:#e6b800; }
+  .progress-dot.current { background:var(--coral); border-color:#c0392b; transform:scale(1.3); }
 
   /* ── SOUNDS VIEW ── */
-  .sounds-container {
-    max-width: 560px;
-    margin: 0 auto;
-    padding: 0 4px;
-  }
-  .sounds-mode-bar {
-    display: flex; justify-content: center; gap: 12px;
-    margin-bottom: 16px; flex-wrap: wrap;
-  }
-  .sounds-mode-btn {
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.1rem;
-    padding: 10px 28px;
-    border: 3px solid #2d3436;
-    border-radius: 50px;
-    cursor: pointer;
-    background: white;
-    color: #2d3436;
-    box-shadow: 3px 3px 0 #2d3436;
-    transition: all 0.15s;
-  }
-  .sounds-mode-btn.active { background: var(--purple); color: white; }
-  .sounds-mode-btn:hover  { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 #2d3436; }
+  .sounds-container { max-width:560px; margin:0 auto; padding:0 4px; }
+  .sounds-mode-bar { display:flex; justify-content:center; gap:12px; margin-bottom:16px; flex-wrap:wrap; }
+  .sounds-mode-btn { font-family:'Fredoka One',cursive; font-size:1.1rem; padding:10px 28px; border:3px solid #2d3436; border-radius:50px; cursor:pointer; background:white; color:#2d3436; box-shadow:3px 3px 0 #2d3436; transition:all 0.15s; }
+  .sounds-mode-btn.active { background:var(--purple); color:white; }
+  .sounds-mode-btn:hover  { transform:translate(-2px,-2px); box-shadow:5px 5px 0 #2d3436; }
+  .speed-bar { display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:18px; flex-wrap:wrap; }
+  .speed-label { font-weight:800; font-size:0.9rem; color:#636e72; direction:rtl; }
+  .speed-btn { font-family:'Fredoka One',cursive; font-size:0.9rem; padding:6px 18px; border:2px solid #2d3436; border-radius:50px; cursor:pointer; background:white; color:#2d3436; box-shadow:2px 2px 0 #2d3436; transition:all 0.15s; }
+  .speed-btn.active { background:var(--orange); color:white; }
+  .sounds-card { background:white; border:4px solid #2d3436; border-radius:28px; padding:28px 20px 20px; text-align:center; box-shadow:6px 6px 0 #2d3436; margin-bottom:20px; }
+  .sounds-emoji  { font-size:5rem; display:block; margin-bottom:8px; }
+  .sounds-animal { font-family:'Fredoka One',cursive; font-size:2.6rem; color:#2d3436; direction:rtl; line-height:1; }
+  .sounds-animal-en { font-size:0.85rem; font-weight:700; color:#b2bec3; margin-top:4px; }
+  .sounds-instruction { font-size:1rem; font-weight:700; color:#636e72; text-align:center; line-height:1.55; margin-bottom:18px; direction:rtl; }
+  .robot-blocks { display:flex; flex-direction:row-reverse; justify-content:center; gap:10px; flex-wrap:wrap; margin-bottom:20px; min-height:70px; align-items:center; }
+  .r-block { font-family:'Fredoka One',cursive; font-size:1.8rem; width:64px; height:64px; border:3px solid #2d3436; border-radius:16px; display:flex; align-items:center; justify-content:center; background:white; box-shadow:3px 3px 0 #2d3436; opacity:0.25; transition:opacity 0.2s,transform 0.2s; direction:rtl; }
+  .r-block.lit  { opacity:1; transform:scale(1.15) translateY(-4px); }
+  .r-block.done { opacity:1; }
+  .r-block:nth-child(1){background:#fff3cd} .r-block:nth-child(2){background:#d1f2eb}
+  .r-block:nth-child(3){background:#fde8e8} .r-block:nth-child(4){background:#e8e4ff}
+  .r-block:nth-child(5){background:#e0f5fb}
+  .robot-btns { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-bottom:14px; }
+  .robot-play-btn { font-family:'Fredoka One',cursive; font-size:1.2rem; padding:14px 36px; border:3px solid #2d3436; border-radius:50px; cursor:pointer; background:var(--purple); color:white; box-shadow:4px 4px 0 #2d3436; transition:all 0.15s; }
+  .robot-play-btn:hover { transform:translate(-2px,-2px); box-shadow:6px 6px 0 #2d3436; }
+  .robot-play-btn:disabled { opacity:0.5; cursor:not-allowed; transform:none; }
+  .robot-reveal-btn { font-family:'Fredoka One',cursive; font-size:1.1rem; padding:14px 28px; border:3px solid #2d3436; border-radius:50px; cursor:pointer; background:var(--sun); color:#2d3436; box-shadow:4px 4px 0 #2d3436; transition:all 0.15s; }
+  .robot-reveal-btn:hover { transform:translate(-2px,-2px); box-shadow:6px 6px 0 #2d3436; }
+  .robot-answer { font-family:'Fredoka One',cursive; font-size:2rem; text-align:center; color:var(--grass); margin-bottom:12px; direction:rtl; animation:popIn 0.3s cubic-bezier(.34,1.56,.64,1); }
+  .next-animal-btn { display:block; font-family:'Fredoka One',cursive; font-size:1.1rem; padding:12px 32px; border:3px solid #2d3436; border-radius:50px; cursor:pointer; background:var(--grass); color:white; box-shadow:4px 4px 0 #2d3436; transition:all 0.15s; margin:0 auto; }
+  .next-animal-btn:hover { transform:translate(-2px,-2px); box-shadow:6px 6px 0 #2d3436; }
+  .count-choices { display:flex; justify-content:center; gap:12px; flex-wrap:wrap; margin:16px 0; }
+  .count-btn { font-family:'Fredoka One',cursive; font-size:2rem; width:72px; height:72px; border:3px solid #2d3436; border-radius:20px; cursor:pointer; background:white; color:#2d3436; box-shadow:4px 4px 0 #2d3436; transition:all 0.15s; }
+  .count-btn:hover:not(:disabled) { transform:translate(-2px,-2px); box-shadow:6px 6px 0 #2d3436; }
+  .count-btn.correct { background:#d4efdf; border-color:var(--grass); }
+  .count-btn.wrong   { background:#fde8e8; border-color:var(--coral); }
+  .count-feedback { font-family:'Fredoka One',cursive; font-size:1.4rem; text-align:center; min-height:2rem; margin-bottom:10px; color:#2d3436; direction:rtl; }
+  .phoneme-blocks { display:flex; flex-direction:row-reverse; justify-content:center; gap:10px; flex-wrap:wrap; margin-bottom:16px; }
+  .p-block { font-family:'Fredoka One',cursive; font-size:1.6rem; min-width:56px; height:56px; padding:0 8px; border:3px solid #2d3436; border-radius:14px; display:flex; align-items:center; justify-content:center; box-shadow:3px 3px 0 #2d3436; direction:rtl; opacity:0; transform:translateY(12px); transition:opacity 0.25s,transform 0.25s; }
+  .p-block.show { opacity:1; transform:translateY(0); }
+  .p-block:nth-child(1){background:#fff3cd} .p-block:nth-child(2){background:#d1f2eb}
+  .p-block:nth-child(3){background:#fde8e8} .p-block:nth-child(4){background:#e8e4ff}
+  .p-block:nth-child(5){background:#e0f5fb}
 
-  .speed-bar {
-    display: flex; align-items: center; justify-content: center;
-    gap: 10px; margin-bottom: 18px; flex-wrap: wrap;
-  }
-  .speed-label { font-weight: 800; font-size: 0.9rem; color: #636e72; direction: rtl; }
-  .speed-btn {
-    font-family: 'Fredoka One', cursive;
-    font-size: 0.9rem;
-    padding: 6px 18px;
-    border: 2px solid #2d3436;
-    border-radius: 50px;
-    cursor: pointer;
-    background: white;
-    color: #2d3436;
-    box-shadow: 2px 2px 0 #2d3436;
-    transition: all 0.15s;
-  }
-  .speed-btn.active { background: var(--orange); color: white; }
+  /* ── VOICE NUDGE ── */
+  #voice-nudge { display:none; position:fixed; bottom:16px; left:50%; transform:translateX(-50%); z-index:150; background:white; border:3px solid #2d3436; border-radius:20px; box-shadow:5px 5px 0 #2d3436; padding:14px 18px; max-width:370px; width:calc(100% - 32px); align-items:flex-start; gap:12px; animation:slideUp 0.4s cubic-bezier(.34,1.56,.64,1); direction:rtl; }
+  @keyframes slideUp { from{transform:translateX(-50%) translateY(80px);opacity:0} to{transform:translateX(-50%) translateY(0);opacity:1} }
+  #voice-nudge .nudge-icon { font-size:2rem; flex-shrink:0; }
+  #voice-nudge .nudge-body { flex:1; }
+  #voice-nudge .nudge-title { font-family:'Fredoka One',cursive; font-size:1rem; color:#2d3436; margin-bottom:3px; }
+  #voice-nudge .nudge-text  { font-size:0.8rem; font-weight:700; color:#636e72; line-height:1.45; }
+  #voice-nudge .nudge-steps { margin-top:6px; font-size:0.78rem; font-weight:800; color:#2d3436; line-height:1.6; direction:ltr; }
+  #voice-nudge .nudge-close { position:absolute; top:10px; right:12px; font-size:1.1rem; cursor:pointer; color:#b2bec3; background:none; border:none; }
+  #voice-nudge .nudge-close:hover { color:var(--coral); }
 
-  .sounds-card {
-    background: white;
-    border: 4px solid #2d3436;
-    border-radius: 28px;
-    padding: 28px 20px 20px;
-    text-align: center;
-    box-shadow: 6px 6px 0 #2d3436;
-    margin-bottom: 20px;
-  }
-  .sounds-emoji  { font-size: 5rem; display: block; margin-bottom: 8px; }
-  .sounds-animal {
-    font-family: 'Fredoka One', cursive;
-    font-size: 2.6rem;
-    color: #2d3436;
-    line-height: 1;
-  }
-  .sounds-animal-en {
-    font-size: 0.85rem; font-weight: 700; color: #b2bec3; margin-top: 4px;
-  }
+  /* ── SPLASH ── */
+  #splash { position:fixed; inset:0; z-index:200; background:var(--sky); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:32px 24px; text-align:center; transition:opacity 0.6s ease,transform 0.6s ease; }
+  #splash.hide { opacity:0; transform:scale(1.04); pointer-events:none; }
+  .splash-animals  { font-size:3.2rem; letter-spacing:6px; margin-bottom:16px; animation:animalBounce 1.2s ease-in-out infinite alternate; }
+  @keyframes animalBounce { from{transform:translateY(0)} to{transform:translateY(-10px)} }
+  .splash-title    { font-family:'Fredoka One',cursive; font-size:clamp(2.4rem,8vw,4rem); color:#2d3436; text-shadow:4px 4px 0 var(--sun); line-height:1.1; margin-bottom:6px; }
+  .splash-subtitle { font-family:'Fredoka One',cursive; font-size:clamp(1.1rem,3.5vw,1.5rem); color:var(--grass); margin-bottom:6px; }
+  .splash-desc     { font-size:1rem; font-weight:700; color:#636e72; max-width:380px; line-height:1.5; margin-bottom:32px; direction:rtl; }
+  .splash-letters  { font-family:'Fredoka One',cursive; font-size:2rem; color:#2d3436; direction:rtl; letter-spacing:8px; margin-bottom:32px; opacity:0.18; user-select:none; }
+  .splash-badge    { display:inline-flex; gap:10px; margin-bottom:28px; flex-wrap:wrap; justify-content:center; }
+  .splash-badge span { background:white; border:2px solid #2d3436; border-radius:50px; font-size:0.85rem; font-weight:800; padding:5px 14px; color:#2d3436; box-shadow:2px 2px 0 #2d3436; }
+  .splash-enter-btn { font-family:'Fredoka One',cursive; font-size:1.5rem; padding:18px 56px; border:4px solid #2d3436; border-radius:50px; cursor:pointer; background:var(--coral); color:white; box-shadow:6px 6px 0 #2d3436; transition:all 0.2s; animation:pulse-btn 1.8s ease-in-out infinite; }
+  .splash-enter-btn:hover { transform:translate(-3px,-3px); box-shadow:9px 9px 0 #2d3436; animation:none; }
+  @keyframes pulse-btn { 0%,100%{transform:scale(1);box-shadow:6px 6px 0 #2d3436} 50%{transform:scale(1.04) translate(-1px,-1px);box-shadow:7px 7px 0 #2d3436} }
+  .splash-credit { margin-top:24px; font-size:0.78rem; color:#b2bec3; font-weight:700; }
 
-  .sounds-instruction {
-    font-size: 1rem; font-weight: 700; color: #636e72;
-    text-align: center; line-height: 1.55;
-    margin-bottom: 18px;
-  }
-
-  /* robot phoneme blocks */
-  .robot-blocks {
-    display: flex;
-    flex-direction: row-reverse; /* RTL */
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
-    min-height: 70px;
-    align-items: center;
-  }
-  .r-block {
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.8rem;
-    width: 64px; height: 64px;
-    border: 3px solid #2d3436;
-    border-radius: 16px;
-    display: flex; align-items: center; justify-content: center;
-    background: white;
-    box-shadow: 3px 3px 0 #2d3436;
-    opacity: 0.25;
-    transition: opacity 0.2s, transform 0.2s, background 0.2s;
-    direction: rtl;
-  }
-  .r-block.lit {
-    opacity: 1;
-    transform: scale(1.15) translateY(-4px);
-  }
-  .r-block.done { opacity: 1; }
-
-  /* block colors */
-  .r-block:nth-child(1) { background: #fff3cd; }
-  .r-block:nth-child(2) { background: #d1f2eb; }
-  .r-block:nth-child(3) { background: #fde8e8; }
-  .r-block:nth-child(4) { background: #e8e4ff; }
-  .r-block:nth-child(5) { background: #e0f5fb; }
-
-  .robot-btns {
-    display: flex; gap: 12px; justify-content: center;
-    flex-wrap: wrap; margin-bottom: 14px;
-  }
-  .robot-play-btn {
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.2rem;
-    padding: 14px 36px;
-    border: 3px solid #2d3436;
-    border-radius: 50px;
-    cursor: pointer;
-    background: var(--purple);
-    color: white;
-    box-shadow: 4px 4px 0 #2d3436;
-    transition: all 0.15s;
-  }
-  .robot-play-btn:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #2d3436; }
-  .robot-play-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-
-  .robot-reveal-btn {
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.1rem;
-    padding: 14px 28px;
-    border: 3px solid #2d3436;
-    border-radius: 50px;
-    cursor: pointer;
-    background: var(--sun);
-    color: #2d3436;
-    box-shadow: 4px 4px 0 #2d3436;
-    transition: all 0.15s;
-  }
-  .robot-reveal-btn:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #2d3436; }
-
-  .robot-answer {
-    font-family: 'Fredoka One', cursive;
-    font-size: 2rem;
-    text-align: center;
-    color: var(--grass);
-    margin-bottom: 12px;
-    animation: popIn 0.3s cubic-bezier(.34,1.56,.64,1);
-  }
-
-  .next-animal-btn {
-    display: block;
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.1rem;
-    padding: 12px 32px;
-    border: 3px solid #2d3436;
-    border-radius: 50px;
-    cursor: pointer;
-    background: var(--grass);
-    color: white;
-    box-shadow: 4px 4px 0 #2d3436;
-    transition: all 0.15s;
-    margin: 0 auto;
-  }
-  .next-animal-btn:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #2d3436; }
-
-  /* count mode */
-  .count-choices {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin: 16px 0;
-  }
-  .count-btn {
-    font-family: 'Fredoka One', cursive;
-    font-size: 2rem;
-    width: 72px; height: 72px;
-    border: 3px solid #2d3436;
-    border-radius: 20px;
-    cursor: pointer;
-    background: white;
-    color: #2d3436;
-    box-shadow: 4px 4px 0 #2d3436;
-    transition: all 0.15s;
-  }
-  .count-btn:hover:not(:disabled) { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #2d3436; }
-  .count-btn.correct { background: #d4efdf; border-color: var(--grass); }
-  .count-btn.wrong   { background: #fde8e8; border-color: var(--coral); }
-
-  .count-feedback {
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.4rem;
-    text-align: center;
-    min-height: 2rem;
-    margin-bottom: 10px;
-    color: #2d3436;
-  }
-
-  /* phoneme reveal blocks (count mode) */
-  .phoneme-blocks {
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-bottom: 16px;
-  }
-  .p-block {
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.6rem;
-    min-width: 56px; height: 56px;
-    padding: 0 8px;
-    border: 3px solid #2d3436;
-    border-radius: 14px;
-    display: flex; align-items: center; justify-content: center;
-    box-shadow: 3px 3px 0 #2d3436;
-    direction: rtl;
-    opacity: 0;
-    transform: translateY(12px);
-    transition: opacity 0.25s, transform 0.25s;
-  }
-  .p-block.show { opacity: 1; transform: translateY(0); }
-  .p-block:nth-child(1) { background: #fff3cd; }
-  .p-block:nth-child(2) { background: #d1f2eb; }
-  .p-block:nth-child(3) { background: #fde8e8; }
-  .p-block:nth-child(4) { background: #e8e4ff; }
-  .p-block:nth-child(5) { background: #e0f5fb; }
-
-
-  #voice-nudge {
-    display: none;
-    position: fixed;
-    bottom: 16px; left: 50%; transform: translateX(-50%);
-    z-index: 150;
-    background: white;
-    border: 3px solid #2d3436;
-    border-radius: 20px;
-    box-shadow: 5px 5px 0 #2d3436;
-    padding: 14px 18px 14px 16px;
-    max-width: 370px;
-    width: calc(100% - 32px);
-    align-items: flex-start;
-    gap: 12px;
-    animation: slideUp 0.4s cubic-bezier(.34,1.56,.64,1);
-  }
-  @keyframes slideUp {
-    from { transform: translateX(-50%) translateY(80px); opacity: 0; }
-    to   { transform: translateX(-50%) translateY(0);    opacity: 1; }
-  }
-  #voice-nudge .nudge-icon { font-size: 2rem; flex-shrink: 0; margin-top: 2px; }
-  #voice-nudge .nudge-body { flex: 1; direction: rtl; }
-  #voice-nudge .nudge-title {
-    font-family: 'Fredoka One', cursive;
-    font-size: 1rem; color: #2d3436; margin-bottom: 3px;
-  }
-  #voice-nudge .nudge-text {
-    font-size: 0.8rem; font-weight: 700; color: #636e72; line-height: 1.45;
-  }
-  #voice-nudge .nudge-steps {
-    margin-top: 6px; font-size: 0.78rem; font-weight: 800;
-    color: #2d3436; line-height: 1.6; direction: ltr;
-  }
-  #voice-nudge .nudge-close {
-    position: absolute; top: 10px; left: 12px;
-    font-size: 1.1rem; cursor: pointer; color: #b2bec3;
-    background: none; border: none; padding: 0;
-  }
-  #voice-nudge .nudge-close:hover { color: var(--coral); }
-
-  #splash {
-    position: fixed; inset: 0;
-    z-index: 200;
-    background: #fff9f0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 32px 24px;
-    text-align: center;
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-  #splash.hide {
-    opacity: 0;
-    transform: scale(1.04);
-    pointer-events: none;
-  }
-  .splash-animals {
-    font-size: 3.2rem;
-    letter-spacing: 6px;
-    margin-bottom: 16px;
-    animation: animalBounce 1.2s ease-in-out infinite alternate;
-  }
-  @keyframes animalBounce {
-    from { transform: translateY(0); }
-    to   { transform: translateY(-10px); }
-  }
-  .splash-title {
-    font-family: 'Fredoka One', cursive;
-    font-size: clamp(2.4rem, 8vw, 4rem);
-    color: #2d3436;
-    text-shadow: 4px 4px 0 var(--sun);
-    line-height: 1.1;
-    margin-bottom: 6px;
-  }
-  .splash-subtitle {
-    font-family: 'Fredoka One', cursive;
-    font-size: clamp(1.1rem, 3.5vw, 1.5rem);
-    color: var(--grass);
-    margin-bottom: 6px;
-  }
-  .splash-desc {
-    font-size: 1rem;
-    font-weight: 700;
-    color: #636e72;
-    max-width: 380px;
-    line-height: 1.5;
-    margin-bottom: 32px;
-    direction: rtl;
-  }
-  .splash-letters {
-    font-family: 'Fredoka One', cursive;
-    font-size: 2rem;
-    color: #2d3436;
-    direction: rtl;
-    letter-spacing: 8px;
-    margin-bottom: 32px;
-    opacity: 0.18;
-    user-select: none;
-  }
-  .splash-enter-btn {
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.5rem;
-    padding: 18px 56px;
-    border: 4px solid #2d3436;
-    border-radius: 50px;
-    cursor: pointer;
-    background: var(--coral);
-    color: white;
-    box-shadow: 6px 6px 0 #2d3436;
-    transition: all 0.2s;
-    animation: pulse-btn 1.8s ease-in-out infinite;
-  }
-  .splash-enter-btn:hover {
-    transform: translate(-3px,-3px);
-    box-shadow: 9px 9px 0 #2d3436;
-    animation: none;
-  }
-  @keyframes pulse-btn {
-    0%, 100% { transform: scale(1); box-shadow: 6px 6px 0 #2d3436; }
-    50%       { transform: scale(1.04) translate(-1px,-1px); box-shadow: 7px 7px 0 #2d3436; }
-  }
-  .splash-credit {
-    margin-top: 24px;
-    font-size: 0.78rem;
-    color: #b2bec3;
-    font-weight: 700;
-  }
-  .splash-badge {
-    display: inline-flex;
-    gap: 10px;
-    margin-bottom: 28px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  .splash-badge span {
-    background: white;
-    border: 2px solid #2d3436;
-    border-radius: 50px;
-    font-size: 0.85rem;
-    font-weight: 800;
-    padding: 5px 14px;
-    color: #2d3436;
-    box-shadow: 2px 2px 0 #2d3436;
+  @media(max-width:500px){
+    .zoo-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+    .letter-card .heb{font-size:1.8rem} .letter-card .emoji{font-size:2rem}
+    .choices-grid{grid-template-columns:1fr 1fr}
   }
 </style>
 </head>
 <body>
 
-<!-- ── SPLASH SCREEN ── -->
+<!-- SPLASH -->
 <div id="splash">
   <div class="splash-animals">🦁 🐪 🦊 🐋 🦝</div>
   <div class="splash-title">גן החיות</div>
@@ -834,9 +202,7 @@
   <div class="splash-subtitle">The Hebrew Letter Zoo</div>
   <div class="splash-letters">א ב ג ד ה ו ז ח ט י כ ל מ נ ס ע פ צ ק ר ש ת</div>
   <div class="splash-badge">
-    <span>🔤 22 אותיות</span>
-    <span>🎮 5 משחקים</span>
-    <span>🔊 עם קול</span>
+    <span>🔤 22 אותיות</span><span>🎮 משחקים</span><span>🔊 עם קול</span>
   </div>
   <div class="splash-desc">כל אות היא חיה עם צליל סודי!<br>לחץ על כל כרטיס כדי לפגוש את החיה ולשמוע את הצליל.</div>
   <button class="splash-enter-btn" onclick="enterApp()">!כניסה לגן 🚀</button>
@@ -847,118 +213,111 @@
   <div class="cloud" style="width:120px;height:40px;top:8%;animation-duration:28s;animation-delay:-5s"></div>
   <div class="cloud" style="width:80px;height:28px;top:18%;animation-duration:22s;animation-delay:-12s"></div>
   <div class="cloud" style="width:160px;height:50px;top:5%;animation-duration:35s;animation-delay:-20s"></div>
-  <div class="cloud" style="width:100px;height:34px;top:25%;animation-duration:30s;animation-delay:-8s"></div>
 </div>
 
 <header>
-  <h1>🦁 The Hebrew Letter Zoo 🐍</h1>
+  <h1>🦁 גן החיות של האותיות 🐍</h1>
   <p>כל אות היא חיה עם צליל סודי!</p>
 </header>
 
+<!-- SINGLE GAMES TAB (merged) -->
 <div class="tabs">
-  <button class="tab-btn active" onclick="showView('zoo')">🗺️ פגוש את החיות</button>
-  <button class="tab-btn" onclick="showView('game')">🎮 שחק</button>
-  <button class="tab-btn" onclick="showView('sounds')">🤖 משחק הצלילים</button>
+  <button class="tab-btn active" onclick="showView('zoo',this)">🗺️ פגוש את החיות</button>
+  <button class="tab-btn" onclick="showView('games',this)">🎮 משחקים</button>
 </div>
 
 <div id="view-zoo" class="view active">
   <div class="zoo-grid" id="zoo-grid"></div>
 </div>
 
-<div id="view-game" class="view">
-  <div class="game-container">
-    <div id="start-screen" class="start-screen">
-      <span class="big-emoji">🎯</span>
-      <h2>חידון גן החיות!</h2>
-      <p>התאם את האות העברית לחיה החברה שלה.<br>ענה נכון על 10 שאלות וזכה בגביע! 🏆</p>
-      <div class="game-modes" style="margin-bottom:24px">
-        <button class="mode-btn active" id="mode-easy" onclick="setMode('easy',this)">🐣 קל<br><small style="font-size:0.7rem;font-weight:700">אות ← חיה</small></button>
-        <button class="mode-btn" id="mode-hard" onclick="setMode('hard',this)">🦅 קשה<br><small style="font-size:0.7rem;font-weight:700">חיה ← אות</small></button>
-        <button class="mode-btn" id="mode-sound" onclick="setMode('sound',this)">🎵 צליל<br><small style="font-size:0.7rem;font-weight:700">צליל ← אות</small></button>
-      </div>
-      <button class="start-btn" onclick="startGame()">!בואו נשחק 🚀</button>
+<!-- MERGED GAMES VIEW -->
+<div id="view-games" class="view">
+  <div style="max-width:700px;margin:0 auto">
+
+    <!-- Game selector -->
+    <div class="sounds-mode-bar" id="game-selector">
+      <button class="sounds-mode-btn active" id="gsel-quiz"   onclick="selectGame('quiz',this)">🧠 חידון</button>
+      <button class="sounds-mode-btn"        id="gsel-robot"  onclick="selectGame('robot',this)">🤖 הרובוט</button>
+      <button class="sounds-mode-btn"        id="gsel-count"  onclick="selectGame('count',this)">👏 ספור צלילים</button>
     </div>
-    <div id="game-screen" style="display:none">
-      <div class="game-score-bar">
-        <div class="score-item">
-          <div class="score-label">ניקוד</div>
-          <div class="score-value" id="score-display">0</div>
+
+    <!-- ── QUIZ PANEL ── -->
+    <div id="panel-quiz">
+      <div id="start-screen" class="start-screen">
+        <span class="big-emoji">🎯</span>
+        <h2>!חידון גן החיות</h2>
+        <p>התאם את האות העברית לחיה שלה.<br>ענה נכון על 10 שאלות וזכה בגביע! 🏆</p>
+        <div class="game-modes" style="margin-bottom:24px">
+          <button class="mode-btn active" id="mode-easy"  onclick="setMode('easy',this)">🐣 קַל<br><small style="font-size:0.7rem;font-weight:700">אות ← חיה</small></button>
+          <button class="mode-btn"        id="mode-med"   onclick="setMode('med',this)">🦅 בֵּינוֹנִי<br><small style="font-size:0.7rem;font-weight:700">חיה ← אות</small></button>
+          <button class="mode-btn"        id="mode-sound" onclick="setMode('sound',this)">🎵 קָשֶׁה<br><small style="font-size:0.7rem;font-weight:700">צליל ← אות</small></button>
         </div>
-        <div class="score-item">
-          <div class="score-label">שאלה</div>
-          <div class="score-value" id="q-display">1/10</div>
-        </div>
-        <div class="score-item">
-          <div class="score-label">חיים</div>
-          <div class="lives-display" id="lives-display">❤️❤️❤️</div>
-        </div>
+        <button class="start-btn" onclick="startGame()">!בואו נשחק 🚀</button>
       </div>
-      <div class="progress-bar" id="progress-bar"></div>
-      <div class="game-card">
-        <div class="game-question" id="game-question"></div>
-        <div id="game-prompt"></div>
+      <div id="game-screen" style="display:none">
+        <div class="game-score-bar">
+          <div class="score-item"><div class="score-label">ניקוד</div><div class="score-value" id="score-display">0</div></div>
+          <div class="score-item"><div class="score-label">שאלה</div><div class="score-value" id="q-display">1/10</div></div>
+          <div class="score-item"><div class="score-label">חיים</div><div class="lives-display" id="lives-display">❤️❤️❤️</div></div>
+        </div>
+        <div class="progress-bar" id="progress-bar"></div>
+        <div class="game-card">
+          <div class="game-question" id="game-question"></div>
+          <div id="game-prompt"></div>
+        </div>
+        <div class="game-feedback" id="game-feedback"></div>
+        <div class="choices-grid" id="choices-grid"></div>
       </div>
-      <div class="game-feedback" id="game-feedback"></div>
-      <div class="choices-grid" id="choices-grid"></div>
-    </div>
-    <div id="result-screen" class="result-screen">
-      <div id="result-emoji" style="font-size:5rem;margin-bottom:12px"></div>
-      <h2 id="result-title"></h2>
-      <div class="result-score" id="result-score"></div>
-      <div class="result-msg" id="result-msg"></div>
-      <button class="play-again-btn" onclick="resetGame()">שחק שוב! 🔄</button>
-    </div>
-  </div>
-</div>
-
-<!-- ── SOUNDS VIEW ── -->
-<div id="view-sounds" class="view">
-  <div class="sounds-container">
-
-    <!-- mode picker -->
-    <div class="sounds-mode-bar" id="sounds-mode-bar">
-      <button class="sounds-mode-btn active" id="smb-robot" onclick="setSoundsMode('robot',this)">🤖 הרובוט</button>
-      <button class="sounds-mode-btn" id="smb-count" onclick="setSoundsMode('count',this)">👏 ספור צלילים</button>
+      <div id="result-screen" class="result-screen">
+        <div id="result-emoji" style="font-size:5rem;margin-bottom:12px"></div>
+        <h2 id="result-title"></h2>
+        <div class="result-score" id="result-score"></div>
+        <div class="result-msg" id="result-msg"></div>
+        <button class="play-again-btn" onclick="resetGame()">שחק שוב! 🔄</button>
+      </div>
     </div>
 
-    <!-- speed control (robot mode only) -->
-    <div class="speed-bar" id="speed-bar">
-      <span class="speed-label">מהירות הרובוט:</span>
-      <button class="speed-btn active" onclick="setRobotSpeed(900,this)">🐢 איטי</button>
-      <button class="speed-btn" onclick="setRobotSpeed(550,this)">🐇 מהיר</button>
-    </div>
-
-    <!-- shared animal card -->
-    <div class="sounds-card" id="sounds-card">
-      <div class="sounds-emoji" id="sounds-emoji">🦁</div>
-      <div class="sounds-animal" id="sounds-animal" dir="rtl">אֲרִי</div>
-      <div class="sounds-animal-en" id="sounds-animal-en">Ari (Lion)</div>
-    </div>
-
-    <!-- ── ROBOT MODE ── -->
-    <div id="robot-panel">
-      <div class="sounds-instruction" dir="rtl">🤖 הרובוט יגיד את המילה לאט-לאט, צליל אחר צליל.<br>נסה לחבר אותם למילה אחת!</div>
+    <!-- ── ROBOT PANEL ── -->
+    <div id="panel-robot" style="display:none">
+      <div class="speed-bar">
+        <span class="speed-label">מהירות הרובוט:</span>
+        <button class="speed-btn active" onclick="setRobotSpeed(950,this)">🐢 איטי</button>
+        <button class="speed-btn" onclick="setRobotSpeed(600,this)">🐇 מהיר</button>
+      </div>
+      <div class="sounds-card" id="robot-card">
+        <div class="sounds-emoji" id="robot-emoji">🦁</div>
+        <div class="sounds-animal" id="robot-animal" dir="rtl">אֲרִי</div>
+        <div class="sounds-animal-en" id="robot-animal-en">Ari (Lion)</div>
+      </div>
+      <div class="sounds-instruction" dir="rtl">🤖 הרובוט יגיד את המילה צליל אחר צליל.<br>נסה לחבר אותם למילה אחת!</div>
       <div class="robot-blocks" id="robot-blocks"></div>
       <div class="robot-btns">
         <button class="robot-play-btn" id="robot-play-btn" onclick="playRobot()">▶ תשמע את הרובוט</button>
         <button class="robot-reveal-btn" id="robot-reveal-btn" onclick="revealWord()" style="display:none">💬 מה המילה?</button>
       </div>
       <div class="robot-answer" id="robot-answer" style="display:none" dir="rtl"></div>
-      <button class="next-animal-btn" id="robot-next-btn" onclick="nextSoundsAnimal()" style="display:none">הבא ← </button>
+      <button class="next-animal-btn" id="robot-next-btn" onclick="nextSoundsAnimal('robot')" style="display:none">← הבא</button>
     </div>
 
-    <!-- ── COUNT MODE ── -->
-    <div id="count-panel" style="display:none">
+    <!-- ── COUNT PANEL ── -->
+    <div id="panel-count" style="display:none">
+      <div class="sounds-card" id="count-card">
+        <div class="sounds-emoji" id="count-emoji">🦁</div>
+        <div class="sounds-animal" id="count-animal" dir="rtl">אֲרִי</div>
+        <div class="sounds-animal-en" id="count-animal-en">Ari (Lion)</div>
+      </div>
       <div class="sounds-instruction" dir="rtl">👏 תשמע את המילה ותספור כמה צלילים יש בה.<br>לחץ על המספר הנכון!</div>
       <button class="robot-play-btn" id="count-play-btn" onclick="playWordNormal()">▶ שמע את המילה</button>
       <div class="count-choices" id="count-choices"></div>
       <div class="count-feedback" id="count-feedback" dir="rtl"></div>
       <div class="phoneme-blocks" id="phoneme-blocks" style="display:none"></div>
-      <button class="next-animal-btn" id="count-next-btn" onclick="nextSoundsAnimal()" style="display:none">הבא ←</button>
+      <button class="next-animal-btn" id="count-next-btn" onclick="nextSoundsAnimal('count')" style="display:none">← הבא</button>
     </div>
 
   </div>
 </div>
+
+<!-- MODAL -->
 <div class="modal-overlay" id="modal" onclick="closeModal(event)">
   <div class="modal">
     <span class="modal-close" onclick="closeModal()">✕</span>
@@ -974,594 +333,7 @@
   </div>
 </div>
 
-<script>
-const LETTERS = [
-  // א – Alef – silent. אֲרִי = ari (lion) starts with alef-silent vowel
-  { heb:"א", name:"אָלֶף", sound:"שקט",  emoji:"🦁", animal:"אֲרִי",    animalEn:"Ari (Lion)",       heAnimal:"אֲרִי",    story:"אֲרִי האריה פותח את הפה... ולא יוצא כלום! הוא כל כך מלכותי שהוא לא צריך לדבר. 🤫", move:"פתח את הפה רחב רחב ותקפא — כמו אריה מלכותי שלא אומר שום דבר." },
-  // ב – Bet – B. בְּרָוָז = bravaz (duck)
-  { heb:"ב", name:"בֵּית",  sound:"ב",    emoji:"🦆", animal:"בַּרְוָז",  animalEn:"Barvaz (Duck)",    heAnimal:"בַּרְוָז", story:"הַבַּרְוָז אוהב לאמר בְּ-בְּ-בְּ כל היום! הוא צועד בגאווה ומנענע את הזנב בְּ-בְּ-בְּ.", move:"צעד כמו ברווז ותגיד בְּ-בְּ-בְּ בכל צעד!" },
-  // ג – Gimel – G. גָּמָל = gamal (camel) — the classic one, actually the origin of the letter!
-  { heb:"ג", name:"גִּימֵל", sound:"ג",   emoji:"🐪", animal:"גָּמָל",   animalEn:"Gamal (Camel)",    heAnimal:"גָּמָל",   story:"הַגָּמָל רץ במדבר וצועק גְּ-גְּ-גְּ! הדבשות שלו קופצות למעלה ולמטה.", move:"דהור במקום כמו גמל — גְּ-גְּ-גְּ בכל קפיצה!" },
-  // ד – Dalet – D. דֹּב = dov (bear)
-  { heb:"ד", name:"דָּלֶת", sound:"ד",   emoji:"🐻", animal:"דֹּב",     animalEn:"Dov (Bear)",       heAnimal:"דֹּב",     story:"הַדֹּב הענק הולך בוּם-בוּם-בוּם ואומר דְּ-דְּ-דְּ! כל היער רועד כשהוא עובר.", move:"הלך כמו דוב ענק ותרעים דְּ-דְּ-דְּ בכל צעד כבד!" },
-  // ה – Hey – H. הִיפּוֹפּוֹטָם = hipopotam, but simpler: הֶדֶר = hedgehog? Better: הַמְסְטֶר
-  { heb:"ה", name:"הֵא",    sound:"ה",   emoji:"🦛", animal:"הִיפּוֹ",  animalEn:"Hipo (Hippo)",     heAnimal:"הִיפּוֹפּוֹטָם", story:"הַהִיפּוֹ תמיד מופתע — הֶ-הֶ-הֶ! הוא פותח את הפה הענק ומוציא נשימה כמו מנוע.", move:"פתח את הפה כמו הִיפּוֹ ונשוף הֶ-הֶ-הֶ!" },
-  // ו – Vav – V. וֶרֶד? No. ו sounds like V: וַשְׁטִי? Better animal: וִיקְינְג? No. Use וָוָה = hook shape, but for animal: ורד not animal. Best option: wolf in Hebrew is זְאֵב. Let's use וֶרֶד (rose) — not animal. Use: וַעַל = ibex — starts with ו-V sound!
-  { heb:"ו", name:"וָו",    sound:"ו",   emoji:"🦘", animal:"וַולָבִּי",  animalEn:"Wallaby",    heAnimal:"וַולָבִּי",    story:"הַוַולָבִּי קופץ קדימה ואומר וְ-וְ-וְ! הוא כמו קנגורו קטן עם אנרגיה של רכבת.", move:"קפוץ קדימה כמו וולבי ואמור וְ-וְ-וְ בכל קפיצה!" },
-  // ז – Zayin – Z. זְבוּב = zvuv (fly)!
-  { heb:"ז", name:"זַיִן",  sound:"ז",   emoji:"🪰", animal:"זְבוּב",  animalEn:"Zvuv (Fly)",       heAnimal:"זְבוּב",   story:"הַזְּבוּב זז-זז-זז כל היום ולא עוצר! זְ-זְ-זְ-זְ — הוא המהיר ביותר בגן!", move:"טוס מסביב לחדר כמו זבוב ותאמר זְ-זְ-זְ-זְ בלי לעצור!" },
-  // ח – Chet – Ch (guttural). חֲמוֹר = chamor (donkey)!
-  { heb:"ח", name:"חֵית",  sound:"ח",   emoji:"🫏", animal:"חֲמוֹר",  animalEn:"Chamor (Donkey)",  heAnimal:"חֲמוֹר",   story:"הַחֲמוֹר מנקה את הגרון כל בוקר: חְ-חְ-חְ! נשמע כאילו יש לו גירוד קטן בגרון.", move:"שים יד על הגרון ואמור חְ-חְ-חְ בקול צרוד — כמו חמור מתעורר!" },
-  // ט – Tet – T. טַוָּס = tavas (peacock)!
-  { heb:"ט", name:"טֵית",  sound:"ט",   emoji:"🦚", animal:"טַוָּס",  animalEn:"Tavas (Peacock)",  heAnimal:"טַוָּס",   story:"הַטַּוָּס דופק בכנפיו טְ-טְ-טְ! הוא פותח את הזנב המפואר ומתגנדר.", move:"פרוס את הידיים כמו זנב טווס ותדפוק טְ-טְ-טְ בכל צעד מלכותי!" },
-  // י – Yod – Y. יוֹנָה = yona (dove)!
-  { heb:"י", name:"יוֹד",  sound:"י",   emoji:"🕊️", animal:"יוֹנָה",  animalEn:"Yona (Dove)",      heAnimal:"יוֹנָה",   story:"הַיּוֹנָה היא האות הקטנה ביותר — כמו נקודה! היא מרפרפת בי-בי-בי כמו לחישה.", move:"רפרף באצבעות כמו כנפי יונה ולחש יְ-יְ-יְ-יְ." },
-  // כ – Kaf – K. כֶּבֶשׂ = keves (lamb)!
-  { heb:"כ", name:"כַּף",  sound:"כ",   emoji:"🐑", animal:"כֶּבֶשׂ",  animalEn:"Keves (Lamb)",     heAnimal:"כֶּבֶשׂ",  story:"הַכֶּבֶשׂ קופץ על הגבעות: כְּ-כְּ-כְּ! הצמר שלו כל כך רך שהוא כמו עננים.", move:"קפוץ כמו כבשה קטנה ותאמר כְּ-כְּ-כְּ בכל קפיצה!" },
-  // ל – Lamed – L. לְוִיָתָן = livyatan (whale/leviathan)!
-  { heb:"ל", name:"לָמֶד", sound:"ל",   emoji:"🐋", animal:"לִוְיָתָן", animalEn:"Livyatan (Whale)", heAnimal:"לִוְיָתָן", story:"הַלִּוְיָתָן שר לְ-לְ-לְ תחת הים — קול ארוך וענק שנשמע מקילומטרים!", move:"מתח את הידיים לצדדים כמו לווייתן ושר לְ-לְ-לְ בקול ארוך ועמוק!" },
-  // מ – Mem – M. מְכַשֵּׁפָה? No. מָה = what? Animal: מַרְמִיטָה? No. Best: מַיְמוּן = monkey? Wait — mem+yod+mem+vav+nun. Yes! מַיְמוּן = maimun (monkey)!
-  { heb:"מ", name:"מֵם",   sound:"מ",   emoji:"🪼", animal:"מֶדוּזָה",  animalEn:"Meduza (Jellyfish)", heAnimal:"מֶדוּזָה",  story:"הַמֶּדוּזָה צפה בים בשקט: מְ-מְ-מְ! היא רוקדת לאט-לאט כמו בלון ענק שקוף.", move:"הזז את הידיים למעלה ולמטה כמו מדוזה שצפה ואמור מְ-מְ-מְ בעדינות!" },
-  // נ – Nun – N. נָחָשׁ = nachash (snake)!
-  { heb:"נ", name:"נוּן",  sound:"נ",   emoji:"🐍", animal:"נָחָשׁ",  animalEn:"Nachash (Snake)",  heAnimal:"נָחָשׁ",   story:"הַנָּחָשׁ מתגנב בשקט ואומר נְ-נְ-נְ — כמו שהוא תמיד עומד להגיד 'לא' אבל לא גומר.", move:"התגנב על קצות האצבעות ואמור נְ-נְ-נְ-נְ בשקט!" },
-  // ס – Samech – S. סוּס = sus (horse)!
-  { heb:"ס", name:"סָמֶךְ", sound:"ס",  emoji:"🐴", animal:"סוּס",    animalEn:"Sus (Horse)",      heAnimal:"סוּס",     story:"הַסּוּס דוהר בשדה: סְ-סְ-סְ! הפרסות שלו מכות בקצב ויוצרות צליל מהיר.", move:"דהור בחדר כמו סוס ותאמר סְ-סְ-סְ בקצב כל פעם שהרגל נוחתת!" },
-  // ע – Ayin – silent (guttural stop). עַכְבָּר = achbar (mouse)!
-  { heb:"ע", name:"עַיִן", sound:"שקט", emoji:"🐭", animal:"עַכְבָּר", animalEn:"Achbar (Mouse)",   heAnimal:"עַכְבָּר",  story:"הָעַכְבָּר כל כך שקט — פותח את הפה ולא יוצא שום קול! הוא מומחה ההסוואה של הגן.", move:"פתח את הפה בשקט מוחלט — כמו עכבר שלא רוצה שישמעו אותו!" },
-  // פ – Pe – P/F. פִּיל = pil (elephant)! Starts with peh-P sound.
-  { heb:"פ", name:"פֵּא",  sound:"פ",   emoji:"🐘", animal:"פִּיל",   animalEn:"Pil (Elephant)",   heAnimal:"פִּיל",    story:"הַפִּיל מנפנף בחדק שלו: פְּ-פְּ-פְּ-פַּ! הפה שלו מתפוצץ כמו בלון קטן.", move:"קח נשימה עמוקה ופרץ פְּ-פְּ-פְּ בחוזקה — כמו חדק פיל שמתנפח!" },
-  // צ – Tzadi – Tz. צָב = tzav (tortoise)!
-  { heb:"צ", name:"צַדִּי", sound:"צ",  emoji:"🐢", animal:"צָב",     animalEn:"Tzav (Tortoise)",  heAnimal:"צָב",      story:"הַצָּב הגיבור יוצא מהשריון שלו ומבצע קָרָאטֶה: צְ-צְ-צְ! מנינג'ה עם קונכייה.", move:"עשה מכת קרטה ואמור צְ-צְ-צְ! בכל פעם — אנרגיית נינג'ה מקסימלית." },
-  // ק – Qof – K (back of throat). קוֹף = kof (monkey/ape)! And it's literally the origin of the letter!
-  { heb:"ק", name:"קוֹף",  sound:"ק",   emoji:"🐵", animal:"קוֹף",    animalEn:"Kof (Ape)",        heAnimal:"קוֹף",     story:"הַקּוֹף מלך הג'ונגל קורא מראש העץ: קְ-קְ-קְ-קָ! כל הג'ונגל שומע אותו.", move:"טפס על עץ דמיוני וצעק קְ-קְ-קָ-קָ מלמעלה!" },
-  // ר – Resh – R. רֶגֶל? Not animal. רַמָּאי? No. Best: רִנוֹצֶרוֹס (rhinoceros) or just ראם = re'em (wild ox/buffalo)!
-  { heb:"ר", name:"רֵישׁ",  sound:"ר",  emoji:"🦝", animal:"רָקוּן",   animalEn:"Rakun (Raccoon)",  heAnimal:"רָקוּן",    story:"הָרָקוּן שוטף את האוכל שלו בנהר: רְ-רְ-רְ! הוא תמיד עסוק ורועש כמו מנוע קטן.", move:"שפשף את הידיים יחד כמו רקון שוטף אוכל ואמור רְ-רְ-רְ-רְ בקצב!" },
-  // ש – Shin – Sh. שׁוּעָל = shu'al (fox)!
-  { heb:"ש", name:"שִׁין",  sound:"ש",  emoji:"🦊", animal:"שׁוּעָל",  animalEn:"Shu'al (Fox)",     heAnimal:"שׁוּעָל",  story:"הַשּׁוּעָל החכם אומר שְׁ-שְׁ-שְׁ לכולם — הוא ספרן החווה. שֶׁקֶט! שֶׁקֶט! אבל הוא הכי רועש מכולם.", move:"שים אצבע על השפתיים ואמור שְׁ-שְׁ-שְׁ בקול חזק ככל האפשר!" },
-  // ת – Tav – T. תַּנִּין = tanin (crocodile/dragon)!
-  { heb:"ת", name:"תָּו",   sound:"ת",  emoji:"🐊", animal:"תַּנִּין",  animalEn:"Tanin (Croc)",     heAnimal:"תַּנִּין",  story:"הַתַּנִּין הוא הָאַחֲרוֹן בגן — הסיום הגדול! הוא נועץ שיניים: תְּ-תְּ-תְּ-תָּ-דָּה!", move:"טפח את הידיים יחד כמו לסת תנין — תְּ-תְּ-תְּ-נָק! הסיום המפואר!" },
-];
-
-// Build zoo — RTL grid handles right-to-left order naturally
-const grid = document.getElementById('zoo-grid');
-LETTERS.forEach((l, i) => {
-  const realIdx = i;
-  const card = document.createElement('div');
-  card.className = 'letter-card';
-  card.innerHTML = `
-    <div class="sound-ripple"></div>
-    <span class="emoji">${l.emoji}</span>
-    <div class="heb">${l.heb}</div>
-    <div class="name">${l.name}</div>
-    <div class="animal-heb">${l.animal}</div>
-    <div class="animal-en-hint">${l.animalEn}</div>
-    <span class="sound-badge">${l.sound}</span>
-  `;
-  card.onclick = () => { openModal(realIdx); playCardRipple(card); };
-  grid.appendChild(card);
-});
-
-// ── SPEECH ──
-const SPEECH = {
-  "א": { phoneme: "אָאָאָ",        silentNote: true  },
-  "ב": { phoneme: "בְּ בְּ בְּ",   silentNote: false },
-  "ג": { phoneme: "גְּ גְּ גְּ",   silentNote: false },
-  "ד": { phoneme: "דְּ דְּ דְּ",   silentNote: false },
-  "ה": { phoneme: "הֶ הֶ הֶ",      silentNote: false },
-  "ו": { phoneme: "וְ וְ וְ",      silentNote: false },
-  "ז": { phoneme: "זְ זְ זְ",      silentNote: false },
-  "ח": { phoneme: "חְ חְ חְ",      silentNote: false },
-  "ט": { phoneme: "טְ טְ טְ",      silentNote: false },
-  "י": { phoneme: "יְ יְ יְ",      silentNote: false },
-  "כ": { phoneme: "כְּ כְּ כְּ",   silentNote: false },
-  "ל": { phoneme: "לְ לְ לְ",      silentNote: false },
-  "מ": { phoneme: "מְ מְ מְ",      silentNote: false },
-  "נ": { phoneme: "נְ נְ נְ",      silentNote: false },
-  "ס": { phoneme: "סְ סְ סְ",      silentNote: false },
-  "ע": { phoneme: "עָעָעָ",        silentNote: true  },
-  "פ": { phoneme: "פְּ פְּ פְּ",   silentNote: false },
-  "צ": { phoneme: "צְ צְ צְ",      silentNote: false },
-  "ק": { phoneme: "קְ קְ קְ",      silentNote: false },
-  "ר": { phoneme: "רְ רְ רְ",      silentNote: false },
-  "ש": { phoneme: "שְׁ שְׁ שְׁ",   silentNote: false },
-  "ת": { phoneme: "תְּ תְּ תְּ",   silentNote: false },
-};
-
-let currentLetterIdx = null;
-let heVoice = null;
-let voiceChecked = false;
-
-function loadVoices() {
-  const voices = speechSynthesis.getVoices();
-
-  // Priority: exact he-IL → any Hebrew → null
-  heVoice = voices.find(v => v.lang === 'he-IL' && !v.name.toLowerCase().includes('compact')) ||
-            voices.find(v => v.lang === 'he-IL') ||
-            voices.find(v => v.lang.startsWith('he')) ||
-            null;
-
-  if (!voiceChecked && voices.length > 0) {
-    voiceChecked = true;
-    if (!heVoice) showVoiceNudge();
-  }
-}
-loadVoices();
-if (speechSynthesis.onvoiceschanged !== undefined) {
-  speechSynthesis.onvoiceschanged = loadVoices;
-}
-// Some browsers need a small delay
-setTimeout(loadVoices, 500);
-
-function showVoiceNudge() {
-  const nudge = document.getElementById('voice-nudge');
-  if (nudge) nudge.style.display = 'flex';
-}
-
-function speak(text, rate, pitch, onEnd) {
-  const utt = new SpeechSynthesisUtterance(text);
-  utt.lang = 'he-IL';
-  utt.rate = rate;
-  utt.pitch = pitch;
-  if (heVoice) utt.voice = heVoice;
-  if (onEnd) utt.onend = onEnd;
-  speechSynthesis.speak(utt);
-  return utt;
-}
-
-function speakLetter(idx) {
-  const l = LETTERS[idx];
-  const s = SPEECH[l.heb];
-  if (!s) return;
-  speechSynthesis.cancel();
-
-  const btn = document.getElementById('speak-btn');
-  if (btn) {
-    btn.classList.add('speaking');
-    document.getElementById('speak-label').textContent = 'מקשיבים...';
-  }
-
-  const done = () => {
-    if (btn) {
-      btn.classList.remove('speaking');
-      document.getElementById('speak-label').textContent = 'שמע את הצליל!';
-      document.getElementById('speak-icon').textContent = '🔊';
-    }
-  };
-
-  // 1) Letter name
-  speak(l.name, 0.8, 1.0);
-  // 2) Phoneme x3 — slow and clear
-  speak(s.phoneme, 0.6, 1.1);
-  // 3) Animal name
-  speak(l.heAnimal, 0.8, 1.0, done);
-}
-
-// ── PHONEME BREAKDOWNS for each animal name ──
-// Each array is the sounds RTL order (as spoken), displayed RTL
-const PHONEMES = {
-  "אֲרִי":       ["א","רִ","י"],
-  "בַּרְוָז":    ["בַּ","רְ","וָ","ז"],
-  "גָּמָל":      ["גָּ","מָ","ל"],
-  "דֹּב":        ["דֹּ","ב"],
-  "הִיפּוֹ":     ["הִ","י","פּוֹ"],
-  "וַולָבִּי":   ["וַ","ו","לָ","בִּ","י"],
-  "זְבוּב":      ["זְ","בוּ","ב"],
-  "חֲמוֹר":      ["חֲ","מוֹ","ר"],
-  "טַוָּס":      ["טַ","וָּ","ס"],
-  "יוֹנָה":      ["יוֹ","נָ","ה"],
-  "כֶּבֶשׂ":     ["כֶּ","בֶ","שׂ"],
-  "לִוְיָתָן":   ["לִ","וְ","יָ","תָ","ן"],
-  "מֶדוּזָה":    ["מֶ","דוּ","זָ","ה"],
-  "נָחָשׁ":      ["נָ","חָ","שׁ"],
-  "סוּס":        ["סוּ","ס"],
-  "עַכְבָּר":    ["עַ","כְ","בָּ","ר"],
-  "פִּיל":       ["פִּ","י","ל"],
-  "צָב":         ["צָ","ב"],
-  "קוֹף":        ["קוֹ","ף"],
-  "רָקוּן":      ["רָ","קוּ","ן"],
-  "שׁוּעָל":     ["שׁוּ","עָ","ל"],
-  "תַּנִּין":    ["תַּ","נִּ","י","ן"],
-};
-
-// ── SOUNDS GAME STATE ──
-let soundsMode = 'robot';
-let soundsAnimalIdx = 0;
-let soundsOrder = [];
-let robotSpeed = 900; // ms between phonemes
-let robotPlayed = false;
-
-function initSoundsGame() {
-  // shuffle all 22 animals
-  soundsOrder = LETTERS.map((_,i) => i).sort(() => Math.random() - 0.5);
-  soundsAnimalIdx = 0;
-  loadSoundsAnimal();
-}
-
-function setSoundsMode(mode, btn) {
-  soundsMode = mode;
-  document.querySelectorAll('.sounds-mode-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('robot-panel').style.display  = mode === 'robot' ? 'block' : 'none';
-  document.getElementById('count-panel').style.display  = mode === 'count' ? 'block' : 'none';
-  document.getElementById('speed-bar').style.display    = mode === 'robot' ? 'flex'  : 'none';
-  loadSoundsAnimal();
-}
-
-function setRobotSpeed(ms, btn) {
-  robotSpeed = ms;
-  document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-}
-
-function loadSoundsAnimal() {
-  const idx = soundsOrder[soundsAnimalIdx % soundsOrder.length];
-  const l = LETTERS[idx];
-  const phonemes = PHONEMES[l.heAnimal] || [l.heAnimal];
-
-  document.getElementById('sounds-emoji').textContent  = l.emoji;
-  document.getElementById('sounds-animal').textContent = l.animal;
-  document.getElementById('sounds-animal-en').textContent = l.animalEn;
-
-  if (soundsMode === 'robot') loadRobotMode(l, phonemes);
-  else loadCountMode(l, phonemes);
-}
-
-// ── ROBOT MODE ──
-function loadRobotMode(l, phonemes) {
-  robotPlayed = false;
-  // build blocks RTL
-  const container = document.getElementById('robot-blocks');
-  container.innerHTML = '';
-  phonemes.forEach((p, i) => {
-    const block = document.createElement('div');
-    block.className = 'r-block';
-    block.id = 'rb-' + i;
-    block.textContent = p;
-    container.appendChild(block);
-  });
-
-  document.getElementById('robot-play-btn').disabled = false;
-  document.getElementById('robot-play-btn').style.display = 'inline-block';
-  document.getElementById('robot-reveal-btn').style.display = 'none';
-  document.getElementById('robot-answer').style.display = 'none';
-  document.getElementById('robot-next-btn').style.display = 'none';
-}
-
-function playRobot() {
-  const idx = soundsOrder[soundsAnimalIdx % soundsOrder.length];
-  const l = LETTERS[idx];
-  const phonemes = PHONEMES[l.heAnimal] || [l.heAnimal];
-
-  speechSynthesis.cancel();
-  document.getElementById('robot-play-btn').disabled = true;
-
-  // light up each block + speak it one by one
-  phonemes.forEach((p, i) => {
-    setTimeout(() => {
-      // dim all
-      phonemes.forEach((_,j) => {
-        const b = document.getElementById('rb-' + j);
-        if (b) { b.classList.remove('lit'); if (j < i) b.classList.add('done'); }
-      });
-      // light current
-      const cur = document.getElementById('rb-' + i);
-      if (cur) cur.classList.add('lit');
-
-      // speak this phoneme
-      const utt = new SpeechSynthesisUtterance(p);
-      utt.lang = 'he-IL';
-      utt.rate = 0.6;
-      utt.pitch = 1.1;
-      if (heVoice) utt.voice = heVoice;
-      speechSynthesis.speak(utt);
-
-      // after last phoneme
-      if (i === phonemes.length - 1) {
-        setTimeout(() => {
-          phonemes.forEach((_,j) => {
-            const b = document.getElementById('rb-' + j);
-            if (b) { b.classList.remove('lit'); b.classList.add('done'); }
-          });
-          document.getElementById('robot-play-btn').disabled = false;
-          document.getElementById('robot-reveal-btn').style.display = 'inline-block';
-          robotPlayed = true;
-        }, robotSpeed);
-      }
-    }, i * robotSpeed);
-  });
-}
-
-function revealWord() {
-  const idx = soundsOrder[soundsAnimalIdx % soundsOrder.length];
-  const l = LETTERS[idx];
-  const ans = document.getElementById('robot-answer');
-  ans.textContent = l.emoji + ' ' + l.heAnimal + '!';
-  ans.style.display = 'block';
-  // speak the full word normally
-  const utt = new SpeechSynthesisUtterance(l.heAnimal);
-  utt.lang = 'he-IL'; utt.rate = 0.8;
-  if (heVoice) utt.voice = heVoice;
-  speechSynthesis.speak(utt);
-  document.getElementById('robot-next-btn').style.display = 'block';
-  document.getElementById('robot-reveal-btn').style.display = 'none';
-}
-
-// ── COUNT MODE ──
-function loadCountMode(l, phonemes) {
-  const count = phonemes.length;
-
-  document.getElementById('count-play-btn').disabled = false;
-  document.getElementById('count-feedback').textContent = '';
-  document.getElementById('phoneme-blocks').style.display = 'none';
-  document.getElementById('phoneme-blocks').innerHTML = '';
-  document.getElementById('count-next-btn').style.display = 'none';
-
-  // build number choices: correct + 2 distractors (±1, ±2)
-  const choices = new Set([count]);
-  while (choices.size < 4) {
-    const offset = Math.floor(Math.random() * 3) + 1;
-    const candidate = count + (Math.random() < 0.5 ? offset : -offset);
-    if (candidate >= 1 && candidate <= 6) choices.add(candidate);
-  }
-  const shuffled = [...choices].sort(() => Math.random() - 0.5);
-
-  const grid = document.getElementById('count-choices');
-  grid.innerHTML = '';
-  shuffled.forEach(n => {
-    const btn = document.createElement('button');
-    btn.className = 'count-btn';
-    btn.textContent = n;
-    btn.onclick = () => handleCountChoice(btn, n, count, phonemes);
-    grid.appendChild(btn);
-  });
-}
-
-function playWordNormal() {
-  const idx = soundsOrder[soundsAnimalIdx % soundsOrder.length];
-  const l = LETTERS[idx];
-  speechSynthesis.cancel();
-  const utt = new SpeechSynthesisUtterance(l.heAnimal);
-  utt.lang = 'he-IL'; utt.rate = 0.75;
-  if (heVoice) utt.voice = heVoice;
-  speechSynthesis.speak(utt);
-}
-
-function handleCountChoice(btn, chosen, correct, phonemes) {
-  document.querySelectorAll('.count-btn').forEach(b => b.disabled = true);
-  const feedback = document.getElementById('count-feedback');
-
-  if (chosen === correct) {
-    btn.classList.add('correct');
-    feedback.textContent = shuffle(['🎉 נכון מאוד!','⭐ כל הכבוד!','🦁 מדהים!','🎯 פגיעה!'])[0];
-  } else {
-    btn.classList.add('wrong');
-    document.querySelectorAll('.count-btn').forEach(b => {
-      if (parseInt(b.textContent) === correct) b.classList.add('correct');
-    });
-    feedback.textContent = `יש ${correct} צלילים! תראה:`;
-  }
-
-  // always show phoneme blocks
-  const blocksDiv = document.getElementById('phoneme-blocks');
-  blocksDiv.style.display = 'flex';
-  blocksDiv.innerHTML = '';
-  phonemes.forEach((p, i) => {
-    const block = document.createElement('div');
-    block.className = 'p-block';
-    block.textContent = p;
-    blocksDiv.appendChild(block);
-    setTimeout(() => block.classList.add('show'), 120 * (i + 1));
-  });
-
-  setTimeout(() => {
-    document.getElementById('count-next-btn').style.display = 'block';
-  }, phonemes.length * 120 + 300);
-}
-
-function nextSoundsAnimal() {
-  soundsAnimalIdx++;
-  loadSoundsAnimal();
-}
-
-
-
-function playCardRipple(card) {
-  card.classList.remove('playing');
-  void card.offsetWidth; // reflow to restart animation
-  card.classList.add('playing');
-  setTimeout(() => card.classList.remove('playing'), 700);
-}
-
-function openModal(i) {
-  currentLetterIdx = i;
-  const l = LETTERS[i];
-  document.getElementById('m-emoji').textContent = l.emoji;
-  document.getElementById('m-heb').textContent = l.heb;
-  document.getElementById('m-title').innerHTML = `${l.name} — <span dir="rtl">${l.animal}</span><br><small style="font-size:0.85rem;color:#b2bec3;font-family:'Nunito',sans-serif">${l.animalEn}</small>`;
-  document.getElementById('m-sound').textContent = `צליל: ${l.sound}`;
-  document.getElementById('m-story').textContent = l.story;
-  document.getElementById('m-move').textContent = l.move;
-  document.getElementById('modal').classList.add('open');
-  setTimeout(() => speakLetter(i), 400);
-}
-function closeModal(e) {
-  if (!e || e.target === document.getElementById('modal') || e.target.classList.contains('modal-close')) {
-    document.getElementById('modal').classList.remove('open');
-    speechSynthesis.cancel();
-    currentLetterIdx = null;
-  }
-}
-
-// ── GAME ──
-let gameMode = 'easy';
-let score = 0, lives = 3, questionNum = 0, totalQ = 10;
-let currentAnswer = null, answered = false;
-
-function setMode(m, btn) {
-  gameMode = m;
-  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-}
-
-function showView(name) {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('view-' + name).classList.add('active');
-  event.target.classList.add('active');
-  if (name === 'sounds' && soundsOrder.length === 0) initSoundsGame();
-}
-
-function startGame() {
-  score = 0; lives = 3; questionNum = 0; answered = false;
-  document.getElementById('start-screen').style.display = 'none';
-  document.getElementById('result-screen').classList.remove('show');
-  document.getElementById('game-screen').style.display = 'block';
-  buildProgressBar();
-  nextQuestion();
-}
-
-function buildProgressBar() {
-  const bar = document.getElementById('progress-bar');
-  bar.innerHTML = '';
-  for (let i = 0; i < totalQ; i++) {
-    const dot = document.createElement('div');
-    dot.className = 'progress-dot' + (i === 0 ? ' current' : '');
-    dot.id = 'dot-' + i;
-    bar.appendChild(dot);
-  }
-}
-
-function updateProgressBar(q, correct) {
-  const prevDot = document.getElementById('dot-' + (q-1));
-  if (prevDot) {
-    prevDot.classList.remove('current');
-    prevDot.classList.add('done');
-    prevDot.textContent = correct ? '⭐' : '💔';
-    prevDot.style.width = '20px';
-    prevDot.style.height = '20px';
-    prevDot.style.fontSize = '14px';
-    prevDot.style.display = 'flex';
-    prevDot.style.alignItems = 'center';
-    prevDot.style.justifyContent = 'center';
-    prevDot.style.borderRadius = '50%';
-  }
-  const curDot = document.getElementById('dot-' + q);
-  if (curDot) curDot.classList.add('current');
-}
-
-function shuffle(arr) { return [...arr].sort(() => Math.random() - 0.5); }
-
-function nextQuestion() {
-  if (questionNum >= totalQ || lives <= 0) { endGame(); return; }
-  answered = false;
-  document.getElementById('game-feedback').textContent = '';
-  document.getElementById('score-display').textContent = score;
-  document.getElementById('q-display').textContent = (questionNum+1) + '/' + totalQ;
-  document.getElementById('lives-display').textContent = '❤️'.repeat(lives) + '🤍'.repeat(3-lives);
-
-  // pick correct letter
-  const correctIdx = Math.floor(Math.random() * LETTERS.length);
-  const correct = LETTERS[correctIdx];
-  currentAnswer = correctIdx;
-
-  // pick 3 wrong distractors
-  let wrongPool = LETTERS.map((_,i)=>i).filter(i=>i!==correctIdx);
-  let wrongs = shuffle(wrongPool).slice(0,3);
-  let allChoices = shuffle([correctIdx, ...wrongs]);
-
-  const prompt = document.getElementById('game-prompt');
-  const question = document.getElementById('game-question');
-
-  if (gameMode === 'easy') {
-    question.textContent = `לאיזה חיה שייכת האות הזאת?`;
-    prompt.innerHTML = `<div class="game-big-heb">${correct.heb}</div><div style="font-family:'Fredoka One',cursive;font-size:1.1rem;color:#b2bec3;direction:rtl">${correct.name}</div>`;
-    renderChoices(allChoices, i => `<span style="font-size:2.2rem">${LETTERS[i].emoji}</span><span dir="rtl">${LETTERS[i].animal}</span><span class="choice-name">${LETTERS[i].animalEn}</span>`);
-  } else if (gameMode === 'hard') {
-    question.textContent = `לאיזה אות שייכת החיה הזאת?`;
-    prompt.innerHTML = `<div class="game-big-emoji">${correct.emoji}</div><div class="game-animal-name" dir="rtl">${correct.animal}</div><div style="font-size:0.85rem;color:#b2bec3;font-weight:700">${correct.animalEn}</div>`;
-    renderChoices(allChoices, i => `<span class="choice-heb">${LETTERS[i].heb}</span><span class="choice-name" dir="rtl">${LETTERS[i].name}</span>`);
-  } else {
-    question.textContent = `איזו אות עושה את הצליל הזה?`;
-    prompt.innerHTML = `<div style="font-family:'Fredoka One',cursive;font-size:5rem;color:#2d3436;direction:rtl">${correct.sound}</div><div style="font-size:1rem;font-weight:800;color:#b2bec3;margin-top:6px">${correct.emoji} <span dir="rtl">${correct.animal}</span></div>`;
-    renderChoices(allChoices, i => `<span class="choice-heb">${LETTERS[i].heb}</span><span class="choice-name" dir="rtl">${LETTERS[i].name}</span>`);
-  }
-}
-
-function renderChoices(indices, render) {
-  const grid = document.getElementById('choices-grid');
-  grid.innerHTML = '';
-  indices.forEach(i => {
-    const btn = document.createElement('button');
-    btn.className = 'choice-btn';
-    btn.innerHTML = render(i);
-    btn.dataset.idx = i;
-    btn.onclick = () => handleChoice(btn, i);
-    grid.appendChild(btn);
-  });
-}
-
-function handleChoice(btn, idx) {
-  if (answered) return;
-  answered = true;
-  const correct = idx === currentAnswer;
-  const allBtns = document.querySelectorAll('.choice-btn');
-
-  allBtns.forEach(b => {
-    b.disabled = true;
-    if (parseInt(b.dataset.idx) === currentAnswer) b.classList.add('correct');
-  });
-
-  if (correct) {
-    btn.classList.add('correct');
-    score++;
-    document.getElementById('game-feedback').textContent = shuffle(['🎉 מעולה!','⭐ סופרסטאר!','🦁 נכון מאוד!','🎯 פגיעה!','🍌 גאון!'])[0];
-  } else {
-    btn.classList.add('wrong');
-    lives--;
-    const l = LETTERS[currentAnswer];
-    document.getElementById('game-feedback').textContent = `לא בדיוק! זה ${l.emoji} ${l.animal} — ${l.name}!`;
-    document.getElementById('lives-display').textContent = '❤️'.repeat(lives) + '🤍'.repeat(3-lives);
-  }
-
-  updateProgressBar(questionNum, correct);
-  questionNum++;
-  document.getElementById('score-display').textContent = score;
-
-  setTimeout(() => {
-    if (lives <= 0 || questionNum >= totalQ) endGame();
-    else nextQuestion();
-  }, 1500);
-}
-
-function endGame() {
-  document.getElementById('game-screen').style.display = 'none';
-  const res = document.getElementById('result-screen');
-  res.classList.add('show');
-  document.getElementById('result-score').textContent = score + '/' + totalQ;
-
-  let emoji, title, msg;
-  if (score >= 9)      { emoji='🏆'; title='אלוף גן החיות!';     msg='אתה מכיר כל חיה בעל פה! כל גן החיות מריע לך! 🦁🐝🐪'; }
-  else if (score >= 7) { emoji='⭐'; title='סופרסטאר של הגן!';   msg='כמעט מושלם! עוד כמה ביקורים ותהיה שומר הגן! 🎯'; }
-  else if (score >= 5) { emoji='🌟'; title='כל הכבוד, חוקר!';    msg='חצי מהדרך! המשך לבקר את החיות והן יגלו לך את הסודות שלהן.'; }
-  else                 { emoji='🐣'; title='!תמשיך להתאמן';      msg='החיות רוצות לראות אותך שוב! בקר בגן ולמד את הצלילים שלהן. 🐾'; }
-
-  document.getElementById('result-emoji').textContent = emoji;
-  document.getElementById('result-title').textContent = title;
-  document.getElementById('result-msg').textContent = msg;
-}
-
-function resetGame() {
-  document.getElementById('result-screen').classList.remove('show');
-  document.getElementById('start-screen').style.display = 'block';
-}
-
-function enterApp() {
-  const splash = document.getElementById('splash');
-  splash.classList.add('hide');
-  setTimeout(() => splash.style.display = 'none', 650);
-}
-</script>
-<!-- ── VOICE NUDGE ── -->
+<!-- VOICE NUDGE -->
 <div id="voice-nudge">
   <button class="nudge-close" onclick="document.getElementById('voice-nudge').style.display='none'">✕</button>
   <div class="nudge-icon">🎙️</div>
@@ -1576,6 +348,478 @@ function enterApp() {
   </div>
 </div>
 
+<script>
+// ── LETTER DATA ──
+// finalForm: sofit letter where applicable
+const LETTERS = [
+  { heb:"א", name:"אָלֶף", sound:"שקט",  emoji:"🦁", animal:"אֲרִי",     animalEn:"Ari (Lion)",        heAnimal:"אֲרִי",       story:"אֲרִי האריה פותח את הפה... ולא יוצא כלום! הוא כל כך מלכותי שהוא לא צריך לדבר. 🤫", move:"פתח את הפה רחב רחב ותקפא — כמו אריה מלכותי שלא אומר שום דבר." },
+  { heb:"ב", name:"בֵּית",  sound:"ב",    emoji:"🦆", animal:"בַּרְוָז",   animalEn:"Barvaz (Duck)",     heAnimal:"בַּרְוָז",    story:"הַבַּרְוָז אוהב לאמר בְּ-בְּ-בְּ כל היום! הוא צועד בגאווה ומנענע את הזנב.", move:"צעד כמו ברווז ותגיד בְּ-בְּ-בְּ בכל צעד!" },
+  { heb:"ג", name:"גִּימֵל", sound:"ג",   emoji:"🐪", animal:"גָּמָל",    animalEn:"Gamal (Camel)",     heAnimal:"גָּמָל",      story:"הַגָּמָל רץ במדבר וצועק גְּ-גְּ-גְּ! הדבשות שלו קופצות למעלה ולמטה.", move:"דהור במקום כמו גמל — גְּ-גְּ-גְּ בכל קפיצה!" },
+  { heb:"ד", name:"דָּלֶת", sound:"ד",   emoji:"🐻", animal:"דֹּב",      animalEn:"Dov (Bear)",        heAnimal:"דֹּב",        story:"הַדֹּב הענק הולך בוּם-בוּם-בוּם ואומר דְּ-דְּ-דְּ! כל היער רועד כשהוא עובר.", move:"הלך כמו דוב ענק ותרעים דְּ-דְּ-דְּ בכל צעד כבד!" },
+  { heb:"ה", name:"הֵא",    sound:"ה",   emoji:"🦛", animal:"הִיפּוֹ",   animalEn:"Hipo (Hippo)",      heAnimal:"הִיפּוֹפּוֹטָם", story:"הַהִיפּוֹ תמיד מופתע — הֶ-הֶ-הֶ! הוא פותח את הפה הענק ומוציא נשימה כמו מנוע.", move:"פתח את הפה כמו הִיפּוֹ ונשוף הֶ-הֶ-הֶ!" },
+  { heb:"ו", name:"וָו",    sound:"ו",   emoji:"🦘", animal:"וַולָבִּי", animalEn:"Wallaby (וָוְ, וֹ, וּ)", heAnimal:"וַולָבִּי", story:"הַוַולָבִּי קופץ קדימה ואומר וְ-וְ-וְ! הוא כמו קנגורו קטן עם אנרגיה של רכבת.", move:"קפוץ קדימה כמו וולבי ואמור וְ-וְ-וְ בכל קפיצה!" },
+  { heb:"ז", name:"זַיִן",  sound:"ז",   emoji:"🪰", animal:"זְבוּב",   animalEn:"Zvuv (Fly)",        heAnimal:"זְבוּב",      story:"הַזְּבוּב זז-זז-זז כל היום ולא עוצר! זְ-זְ-זְ-זְ — הוא המהיר ביותר בגן!", move:"טוס מסביב לחדר כמו זבוב ותאמר זְ-זְ-זְ-זְ בלי לעצור!" },
+  { heb:"ח", name:"חֵית",  sound:"ח",   emoji:"🫏", animal:"חֲמוֹר",   animalEn:"Chamor (Donkey)",   heAnimal:"חֲמוֹר",      story:"הַחֲמוֹר מנקה את הגרון כל בוקר: חְ-חְ-חְ! נשמע כאילו יש לו גירוד קטן בגרון.", move:"שים יד על הגרון ואמור חְ-חְ-חְ בקול צרוד — כמו חמור מתעורר!" },
+  { heb:"ט", name:"טֵית",  sound:"ט",   emoji:"🦚", animal:"טַוָּס",   animalEn:"Tavas (Peacock)",   heAnimal:"טַוָּס",      story:"הַטַּוָּס דופק בכנפיו טְ-טְ-טְ! הוא פותח את הזנב המפואר ומתגנדר.", move:"פרוס את הידיים כמו זנב טווס ותדפוק טְ-טְ-טְ בכל צעד מלכותי!" },
+  { heb:"י", name:"יוֹד",  sound:"י",   emoji:"🕊️", animal:"יוֹנָה",  animalEn:"Yona (Dove)",       heAnimal:"יוֹנָה",      story:"הַיּוֹנָה היא האות הקטנה ביותר — כמו נקודה! היא מרפרפת בי-בי-בי כמו לחישה.", move:"רפרף באצבעות כמו כנפי יונה ולחש יְ-יְ-יְ-יְ." },
+  { heb:"כ", finalForm:"ךְ", name:"כַּף", sound:"כ",  emoji:"🐑", animal:"כֶּבֶשׂ",  animalEn:"Keves (Lamb)",      heAnimal:"כֶּבֶשׂ",     story:"הַכֶּבֶשׂ קופץ על הגבעות: כְּ-כְּ-כְּ! הצמר שלו כל כך רך שהוא כמו עננים.", move:"קפוץ כמו כבשה קטנה ותאמר כְּ-כְּ-כְּ בכל קפיצה!" },
+  { heb:"ל", name:"לָמֶד", sound:"ל",   emoji:"🐋", animal:"לִוְיָתָן", animalEn:"Livyatan (Whale)", heAnimal:"לִוְיָתָן",   story:"הַלִּוְיָתָן שר לְ-לְ-לְ תחת הים — קול ארוך וענק שנשמע מקילומטרים!", move:"מתח את הידיים לצדדים כמו לווייתן ושר לְ-לְ-לְ בקול ארוך ועמוק!" },
+  { heb:"מ", finalForm:"ם", name:"מֵם",  sound:"מ",  emoji:"🪼", animal:"מֶדוּזָה", animalEn:"Meduza (Jellyfish)", heAnimal:"מֶדוּזָה",   story:"הַמֶּדוּזָה צפה בים בשקט: מְ-מְ-מְ! היא רוקדת לאט-לאט כמו בלון ענק שקוף.", move:"הזז את הידיים למעלה ולמטה כמו מדוזה שצפה ואמור מְ-מְ-מְ בעדינות!" },
+  { heb:"נ", finalForm:"ן", name:"נוּן", sound:"נ",  emoji:"🐍", animal:"נָחָשׁ",   animalEn:"Nachash (Snake)",   heAnimal:"נָחָשׁ",      story:"הַנָּחָשׁ מתגנב בשקט ואומר נְ-נְ-נְ — כמו שהוא תמיד עומד להגיד 'לא' אבל לא גומר.", move:"התגנב על קצות האצבעות ואמור נְ-נְ-נְ-נְ בשקט!" },
+  { heb:"ס", name:"סָמֶךְ", sound:"ס",  emoji:"🐴", animal:"סוּס",     animalEn:"Sus (Horse)",       heAnimal:"סוּס",        story:"הַסּוּס דוהר בשדה: סְ-סְ-סְ! הפרסות שלו מכות בקצב ויוצרות צליל מהיר.", move:"דהור בחדר כמו סוס ותאמר סְ-סְ-סְ בקצב כל פעם שהרגל נוחתת!" },
+  { heb:"ע", name:"עַיִן", sound:"שקט", emoji:"🐭", animal:"עַכְבָּר",  animalEn:"Achbar (Mouse)",    heAnimal:"עַכְבָּר",    story:"הָעַכְבָּר כל כך שקט — פותח את הפה ולא יוצא שום קול! הוא מומחה ההסוואה של הגן.", move:"פתח את הפה בשקט מוחלט — כמו עכבר שלא רוצה שישמעו אותו!" },
+  { heb:"פ", finalForm:"ף", name:"פֵּא", sound:"פ",  emoji:"🐘", animal:"פִּיל",    animalEn:"Pil (Elephant)",    heAnimal:"פִּיל",       story:"הַפִּיל מנפנף בחדק שלו: פְּ-פְּ-פְּ-פַּ! הפה שלו מתפוצץ כמו בלון קטן.", move:"קח נשימה עמוקה ופרץ פְּ-פְּ-פְּ בחוזקה — כמו חדק פיל שמתנפח!" },
+  { heb:"צ", finalForm:"ץ", name:"צַדִּי", sound:"צ", emoji:"🐢", animal:"צָב",     animalEn:"Tzav (Tortoise)",  heAnimal:"צָב",        story:"הַצָּב הגיבור יוצא מהשריון שלו ומבצע קָרָאטֶה: צְ-צְ-צְ! מנינג'ה עם קונכייה.", move:"עשה מכת קרטה ואמור צְ-צְ-צְ! בכל פעם — אנרגיית נינג'ה מקסימלית." },
+  { heb:"ק", name:"קוֹף",  sound:"ק",   emoji:"🐵", animal:"קוֹף",     animalEn:"Kof (Ape)",         heAnimal:"קוֹף",        story:"הַקּוֹף מלך הג'ונגל קורא מראש העץ: קְ-קְ-קְ-קָ! כל הג'ונגל שומע אותו.", move:"טפס על עץ דמיוני וצעק קְ-קְ-קָ-קָ מלמעלה!" },
+  { heb:"ר", name:"רֵישׁ", sound:"ר",   emoji:"🦝", animal:"רָקוּן",    animalEn:"Rakun (Raccoon)",   heAnimal:"רָקוּן",      story:"הָרָקוּן שוטף את האוכל שלו בנהר: רְ-רְ-רְ! הוא תמיד עסוק ורועש כמו מנוע קטן.", move:"שפשף את הידיים יחד כמו רקון שוטף אוכל ואמור רְ-רְ-רְ-רְ בקצב!" },
+  { heb:"ש", name:"שִׁין",  sound:"ש",  emoji:"🦊", animal:"שׁוּעָל",  animalEn:"Shu'al (Fox)",      heAnimal:"שׁוּעָל",     story:"הַשּׁוּעָל החכם אומר שְׁ-שְׁ-שְׁ לכולם — הוא ספרן החווה. שֶׁקֶט! שֶׁקֶט! אבל הוא הכי רועש מכולם.", move:"שים אצבע על השפתיים ואמור שְׁ-שְׁ-שְׁ בקול חזק ככל האפשר!" },
+  { heb:"ת", name:"תָּו",   sound:"ת",  emoji:"🐊", animal:"תַּנִּין",  animalEn:"Tanin (Croc)",      heAnimal:"תַּנִּין",    story:"הַתַּנִּין הוא הָאַחֲרוֹן בגן — הסיום הגדול! הוא נועץ שיניים: תְּ-תְּ-תְּ-תָּ-דָּה!", move:"טפח את הידיים יחד כמו לסת תנין — תְּ-תְּ-תְּ-נָק! הסיום המפואר!" },
+];
 
+// ── ZOO GRID ──
+const grid = document.getElementById('zoo-grid');
+LETTERS.forEach((l, i) => {
+  const card = document.createElement('div');
+  card.className = 'letter-card';
+  const finalHTML = l.finalForm ? `<div class="heb-final">סוף מילה: ${l.finalForm}</div>` : '';
+  card.innerHTML = `
+    <div class="sound-ripple"></div>
+    <span class="emoji">${l.emoji}</span>
+    <div class="heb">${l.heb}</div>
+    ${finalHTML}
+    <div class="name">${l.name}</div>
+    <div class="animal-heb">${l.animal}</div>
+    <div class="animal-en-hint">${l.animalEn}</div>
+    <span class="sound-badge">${l.sound}</span>
+  `;
+  card.onclick = () => { openModal(i); playCardRipple(card); };
+  grid.appendChild(card);
+});
+
+// ── SPEECH ──
+const SPEECH = {
+  "א":{ phoneme:"אָ אָ אָ", silentNote:true },
+  "ב":{ phoneme:"בְּ בְּ בְּ" },
+  "ג":{ phoneme:"גְּ גְּ גְּ" },
+  "ד":{ phoneme:"דְּ דְּ דְּ" },
+  "ה":{ phoneme:"הֶ הֶ הֶ" },
+  "ו":{ phoneme:"וַו וֹ וּ" }, // ve, o, oo
+  "ז":{ phoneme:"זְ זְ זְ" },
+  "ח":{ phoneme:"חְ חְ חְ" },
+  "ט":{ phoneme:"טְ טְ טְ" },
+  "י":{ phoneme:"יְ יְ יְ" },
+  "כ":{ phoneme:"כְּ כְּ כְּ" },
+  "ל":{ phoneme:"לְ לְ לְ" },
+  "מ":{ phoneme:"מְ מְ מְ" },
+  "נ":{ phoneme:"נְ נְ נְ" },
+  "ס":{ phoneme:"סְ סְ סְ" },
+  "ע":{ phoneme:"עָ עָ עָ", silentNote:true },
+  "פ":{ phoneme:"פְּ פְּ פְּ" },
+  "צ":{ phoneme:"צְ צְ צְ" },
+  "ק":{ phoneme:"קְ קְ קְ" },
+  "ר":{ phoneme:"רְ רְ רְ" },
+  "ש":{ phoneme:"שְׁ שְׁ שְׁ" },
+  "ת":{ phoneme:"תְּ תְּ תְּ" },
+};
+
+// phoneme breakdowns — וַולָבִּי counts as 1 sound (ו)
+const PHONEMES = {
+  "אֲרִי":["א","רִ","י"],
+  "בַּרְוָז":["בַּ","רְ","וָ","ז"],
+  "גָּמָל":["גָּ","מָ","ל"],
+  "דֹּב":["דֹּ","ב"],
+  "הִיפּוֹפּוֹטָם":["הִי","פּוֹ","פּוֹ","טָם"],
+  "וַולָבִּי":["וַו","לָ","בִּי"], // ו = 1 sound
+  "זְבוּב":["זְ","בוּ","ב"],
+  "חֲמוֹר":["חֲ","מוֹ","ר"],
+  "טַוָּס":["טַ","וָּ","ס"],
+  "יוֹנָה":["יוֹ","נָ","ה"],
+  "כֶּבֶשׂ":["כֶּ","בֶ","שׂ"],
+  "לִוְיָתָן":["לִ","וְ","יָ","תָן"],
+  "מֶדוּזָה":["מֶ","דוּ","זָ","ה"],
+  "נָחָשׁ":["נָ","חָ","שׁ"],
+  "סוּס":["סוּ","ס"],
+  "עַכְבָּר":["עַ","כְ","בָּ","ר"],
+  "פִּיל":["פִּי","ל"],
+  "צָב":["צָ","ב"],
+  "קוֹף":["קוֹ","ף"],
+  "רָקוּן":["רָ","קוּ","ן"],
+  "שׁוּעָל":["שׁוּ","עָ","ל"],
+  "תַּנִּין":["תַּ","נִּין"],
+};
+
+// ── VOICE ──
+let heVoice = null, voiceChecked = false, currentLetterIdx = null;
+
+function loadVoices() {
+  const voices = speechSynthesis.getVoices();
+  heVoice = voices.find(v => v.lang === 'he-IL' && !v.name.toLowerCase().includes('compact')) ||
+            voices.find(v => v.lang === 'he-IL') ||
+            voices.find(v => v.lang.startsWith('he')) || null;
+  if (!voiceChecked && voices.length > 0) {
+    voiceChecked = true;
+    if (!heVoice) document.getElementById('voice-nudge').style.display = 'flex';
+  }
+}
+loadVoices();
+if (speechSynthesis.onvoiceschanged !== undefined) speechSynthesis.onvoiceschanged = loadVoices;
+setTimeout(loadVoices, 500);
+
+function speak(text, rate, pitch, onEnd) {
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang = 'he-IL'; utt.rate = rate; utt.pitch = pitch; utt.volume = 1.0;
+  if (heVoice) utt.voice = heVoice;
+  if (onEnd) utt.onend = onEnd;
+  speechSynthesis.speak(utt);
+}
+
+// speak: name → phoneme (louder, slower) → animal name
+function speakLetter(idx) {
+  const l = LETTERS[idx];
+  const s = SPEECH[l.heb];
+  if (!s) return;
+  speechSynthesis.cancel();
+  const btn = document.getElementById('speak-btn');
+  if (btn) { btn.classList.add('speaking'); document.getElementById('speak-label').textContent = 'מקשיבים...'; }
+  const done = () => {
+    if (btn) { btn.classList.remove('speaking'); document.getElementById('speak-label').textContent = 'שמע שוב 🔊'; document.getElementById('speak-icon').textContent = '🔊'; }
+  };
+  speak(l.name, 0.8, 1.0);
+  speak(s.phoneme, 0.5, 1.0); // slower + full volume
+  speak(l.heAnimal, 0.8, 1.0, done);
+}
+
+function speakCurrent() { if (currentLetterIdx !== null) speakLetter(currentLetterIdx); }
+
+function playCardRipple(card) {
+  card.classList.remove('playing'); void card.offsetWidth; card.classList.add('playing');
+  setTimeout(() => card.classList.remove('playing'), 700);
+}
+
+function openModal(i) {
+  currentLetterIdx = i;
+  const l = LETTERS[i];
+  document.getElementById('m-emoji').textContent = l.emoji;
+  document.getElementById('m-heb').textContent = l.heb;
+  document.getElementById('m-title').innerHTML = `${l.name} — <span dir="rtl">${l.animal}</span><br><small style="font-size:0.85rem;color:#b2bec3;font-family:'Nunito',sans-serif">${l.animalEn}</small>`;
+  document.getElementById('m-sound').textContent = `צליל: ${l.sound}`;
+  document.getElementById('m-story').textContent = l.story;
+  document.getElementById('m-move').textContent = l.move;
+  document.getElementById('speak-label').textContent = 'שמע את הצליל!';
+  document.getElementById('modal').classList.add('open');
+  setTimeout(() => speakLetter(i), 400);
+}
+function closeModal(e) {
+  if (!e || e.target === document.getElementById('modal') || e.target.classList.contains('modal-close')) {
+    document.getElementById('modal').classList.remove('open');
+    speechSynthesis.cancel(); currentLetterIdx = null;
+  }
+}
+
+// ── VIEW / GAME SELECTOR ──
+function showView(name, btn) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  btn.classList.add('active');
+  if (name === 'games' && soundsOrder.length === 0) initSoundsGame();
+}
+
+function selectGame(name, btn) {
+  document.querySelectorAll('#game-selector .sounds-mode-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-quiz').style.display   = name === 'quiz'  ? 'block' : 'none';
+  document.getElementById('panel-robot').style.display  = name === 'robot' ? 'block' : 'none';
+  document.getElementById('panel-count').style.display  = name === 'count' ? 'block' : 'none';
+  if (name === 'robot') loadSoundsAnimal('robot');
+  if (name === 'count') loadSoundsAnimal('count');
+  // read instruction aloud
+  const instructions = {
+    quiz:  'חידון! התאם את האות לחיה שלה.',
+    robot: 'הרובוט! תקשיב לצלילים ונסה לחבר אותם למילה.',
+    count: 'ספור צלילים! תשמע את המילה ותספור כמה צלילים יש.'
+  };
+  speechSynthesis.cancel();
+  speak(instructions[name], 0.85, 1.0);
+}
+
+// ── QUIZ GAME ──
+let gameMode = 'easy', score = 0, lives = 3, questionNum = 0, totalQ = 10;
+let currentAnswer = null, answered = false;
+let usedInGame = []; // prevent repeats
+
+function setMode(m, btn) {
+  gameMode = m;
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function startGame() {
+  score = 0; lives = 3; questionNum = 0; answered = false; usedInGame = [];
+  document.getElementById('start-screen').style.display = 'none';
+  document.getElementById('result-screen').classList.remove('show');
+  document.getElementById('game-screen').style.display = 'block';
+  buildProgressBar(); nextQuestion();
+}
+
+function buildProgressBar() {
+  const bar = document.getElementById('progress-bar'); bar.innerHTML = '';
+  for (let i = 0; i < totalQ; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'progress-dot' + (i === 0 ? ' current' : '');
+    dot.id = 'dot-' + i; bar.appendChild(dot);
+  }
+}
+
+function updateProgressBar(q, correct) {
+  const prev = document.getElementById('dot-' + (q-1));
+  if (prev) {
+    prev.classList.remove('current'); prev.classList.add('done');
+    prev.textContent = correct ? '⭐' : '💔';
+    Object.assign(prev.style, {width:'20px',height:'20px',fontSize:'14px',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%'});
+  }
+  const cur = document.getElementById('dot-' + q);
+  if (cur) cur.classList.add('current');
+}
+
+function shuffle(arr) { return [...arr].sort(() => Math.random() - 0.5); }
+
+function nextQuestion() {
+  if (questionNum >= totalQ || lives <= 0) { endGame(); return; }
+  answered = false;
+  document.getElementById('game-feedback').textContent = '';
+  document.getElementById('score-display').textContent = score;
+  document.getElementById('q-display').textContent = (questionNum+1) + '/' + totalQ;
+  document.getElementById('lives-display').textContent = '❤️'.repeat(lives) + '🤍'.repeat(3-lives);
+
+  // no repeats until pool exhausted
+  let pool = LETTERS.map((_,i)=>i).filter(i => !usedInGame.includes(i));
+  if (pool.length === 0) { usedInGame = []; pool = LETTERS.map((_,i)=>i); }
+  const correctIdx = pool[Math.floor(Math.random() * pool.length)];
+  usedInGame.push(correctIdx);
+  const correct = LETTERS[correctIdx];
+  currentAnswer = correctIdx;
+
+  let wrongPool = LETTERS.map((_,i)=>i).filter(i=>i!==correctIdx);
+  let allChoices = shuffle([correctIdx, ...shuffle(wrongPool).slice(0,3)]);
+
+  const prompt = document.getElementById('game-prompt');
+  const question = document.getElementById('game-question');
+
+  if (gameMode === 'easy') {
+    question.textContent = 'לאיזה חיה שייכת האות הזאת?';
+    prompt.innerHTML = `<div class="game-big-heb">${correct.heb}</div><div style="font-family:'Fredoka One',cursive;font-size:1.1rem;color:#b2bec3;direction:rtl">${correct.name}</div>`;
+    renderChoices(allChoices, i => `<span style="font-size:2.2rem">${LETTERS[i].emoji}</span><span dir="rtl">${LETTERS[i].animal}</span><span class="choice-name">${LETTERS[i].animalEn}</span>`);
+  } else if (gameMode === 'med') {
+    question.textContent = 'לאיזה אות שייכת החיה הזאת?';
+    prompt.innerHTML = `<div class="game-big-emoji">${correct.emoji}</div><div class="game-animal-name" dir="rtl">${correct.animal}</div><div style="font-size:0.85rem;color:#b2bec3;font-weight:700">${correct.animalEn}</div>`;
+    renderChoices(allChoices, i => `<span class="choice-heb">${LETTERS[i].heb}</span><span class="choice-name" dir="rtl">${LETTERS[i].name}</span>`);
+  } else {
+    question.textContent = 'איזו אות עושה את הצליל הזה?';
+    prompt.innerHTML = `<div style="font-family:'Fredoka One',cursive;font-size:5rem;color:#2d3436;direction:rtl">${correct.sound}</div><div style="font-size:1rem;font-weight:800;color:#b2bec3;margin-top:6px">${correct.emoji} <span dir="rtl">${correct.animal}</span></div>`;
+    renderChoices(allChoices, i => `<span class="choice-heb">${LETTERS[i].heb}</span><span class="choice-name" dir="rtl">${LETTERS[i].name}</span>`);
+  }
+}
+
+function renderChoices(indices, render) {
+  const g = document.getElementById('choices-grid'); g.innerHTML = '';
+  indices.forEach(i => {
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn'; btn.innerHTML = render(i); btn.dataset.idx = i;
+    btn.onclick = () => handleChoice(btn, i); g.appendChild(btn);
+  });
+}
+
+function handleChoice(btn, idx) {
+  if (answered) return; answered = true;
+  const correct = idx === currentAnswer;
+  document.querySelectorAll('.choice-btn').forEach(b => {
+    b.disabled = true;
+    if (parseInt(b.dataset.idx) === currentAnswer) b.classList.add('correct');
+  });
+  if (correct) {
+    btn.classList.add('correct'); score++;
+    document.getElementById('game-feedback').textContent = shuffle(['🎉 מעולה!','⭐ סופרסטאר!','🦁 נכון מאוד!','🎯 פגיעה!','🍌 גאון!'])[0];
+  } else {
+    btn.classList.add('wrong'); lives--;
+    const l = LETTERS[currentAnswer];
+    document.getElementById('game-feedback').textContent = `לא בדיוק! זה ${l.emoji} ${l.animal} — ${l.name}!`;
+    document.getElementById('lives-display').textContent = '❤️'.repeat(lives) + '🤍'.repeat(3-lives);
+  }
+  updateProgressBar(questionNum, correct); questionNum++;
+  document.getElementById('score-display').textContent = score;
+  setTimeout(() => { if (lives <= 0 || questionNum >= totalQ) endGame(); else nextQuestion(); }, 1500);
+}
+
+function endGame() {
+  document.getElementById('game-screen').style.display = 'none';
+  const res = document.getElementById('result-screen'); res.classList.add('show');
+  document.getElementById('result-score').textContent = score + '/' + totalQ;
+  let emoji, title, msg;
+  if (score>=9)      {emoji='🏆';title='אלוף גן החיות!';    msg='אתה מכיר כל חיה בעל פה! כל גן החיות מריע לך! 🦁🐝🐪';}
+  else if(score>=7)  {emoji='⭐';title='סופרסטאר של הגן!';  msg='כמעט מושלם! עוד כמה ביקורים ותהיה שומר הגן! 🎯';}
+  else if(score>=5)  {emoji='🌟';title='כל הכבוד, חוקר!';   msg='חצי מהדרך! המשך לבקר את החיות והן יגלו לך את הסודות שלהן.';}
+  else               {emoji='🐣';title='תמשיך להתאמן!';     msg='החיות רוצות לראות אותך שוב! בקר בגן ולמד את הצלילים שלהן. 🐾';}
+  document.getElementById('result-emoji').textContent = emoji;
+  document.getElementById('result-title').textContent = title;
+  document.getElementById('result-msg').textContent = msg;
+}
+
+function resetGame() {
+  document.getElementById('result-screen').classList.remove('show');
+  document.getElementById('start-screen').style.display = 'block';
+}
+
+// ── SOUNDS GAMES ──
+let soundsOrder = [], robotIdx = 0, countIdx = 0, robotSpeed = 950;
+
+function initSoundsGame() {
+  soundsOrder = LETTERS.map((_,i)=>i).sort(()=>Math.random()-0.5);
+  robotIdx = 0; countIdx = 0;
+  loadSoundsAnimal('robot');
+  loadSoundsAnimal('count');
+}
+
+function setRobotSpeed(ms, btn) {
+  robotSpeed = ms;
+  document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function loadSoundsAnimal(mode) {
+  const idx = mode === 'robot'
+    ? soundsOrder[robotIdx % soundsOrder.length]
+    : soundsOrder[countIdx % soundsOrder.length];
+  const l = LETTERS[idx];
+  const phonemes = PHONEMES[l.heAnimal] || [l.heAnimal];
+
+  if (mode === 'robot') {
+    document.getElementById('robot-emoji').textContent = l.emoji;
+    document.getElementById('robot-animal').textContent = l.animal;
+    document.getElementById('robot-animal-en').textContent = l.animalEn;
+    loadRobotMode(l, phonemes);
+  } else {
+    document.getElementById('count-emoji').textContent = l.emoji;
+    document.getElementById('count-animal').textContent = l.animal;
+    document.getElementById('count-animal-en').textContent = l.animalEn;
+    loadCountMode(l, phonemes);
+  }
+}
+
+function nextSoundsAnimal(mode) {
+  if (mode === 'robot') robotIdx++; else countIdx++;
+  loadSoundsAnimal(mode);
+}
+
+// robot mode
+function loadRobotMode(l, phonemes) {
+  const container = document.getElementById('robot-blocks'); container.innerHTML = '';
+  phonemes.forEach((p, i) => {
+    const block = document.createElement('div');
+    block.className = 'r-block'; block.id = 'rb-' + i; block.textContent = p;
+    container.appendChild(block);
+  });
+  document.getElementById('robot-play-btn').disabled = false;
+  document.getElementById('robot-reveal-btn').style.display = 'none';
+  document.getElementById('robot-answer').style.display = 'none';
+  document.getElementById('robot-next-btn').style.display = 'none';
+}
+
+function playRobot() {
+  const idx = soundsOrder[robotIdx % soundsOrder.length];
+  const l = LETTERS[idx];
+  const phonemes = PHONEMES[l.heAnimal] || [l.heAnimal];
+  speechSynthesis.cancel();
+  document.getElementById('robot-play-btn').disabled = true;
+
+  phonemes.forEach((p, i) => {
+    setTimeout(() => {
+      phonemes.forEach((_,j) => {
+        const b = document.getElementById('rb-'+j);
+        if (b) { b.classList.remove('lit'); if(j<i) b.classList.add('done'); }
+      });
+      const cur = document.getElementById('rb-'+i);
+      if (cur) cur.classList.add('lit');
+      // speak the phoneme NOT the letter name — use a vowelled syllable
+      speak(p, 0.5, 1.0);
+      if (i === phonemes.length-1) {
+        setTimeout(() => {
+          phonemes.forEach((_,j) => { const b=document.getElementById('rb-'+j); if(b){b.classList.remove('lit');b.classList.add('done');} });
+          document.getElementById('robot-play-btn').disabled = false;
+          document.getElementById('robot-reveal-btn').style.display = 'inline-block';
+        }, robotSpeed);
+      }
+    }, i * robotSpeed);
+  });
+}
+
+function revealWord() {
+  const idx = soundsOrder[robotIdx % soundsOrder.length];
+  const l = LETTERS[idx];
+  const ans = document.getElementById('robot-answer');
+  ans.textContent = l.emoji + ' ' + l.heAnimal + '!'; ans.style.display = 'block';
+  speak(l.heAnimal, 0.8, 1.0);
+  document.getElementById('robot-next-btn').style.display = 'block';
+  document.getElementById('robot-reveal-btn').style.display = 'none';
+}
+
+// count mode
+function loadCountMode(l, phonemes) {
+  document.getElementById('count-play-btn').disabled = false;
+  document.getElementById('count-feedback').textContent = '';
+  document.getElementById('phoneme-blocks').style.display = 'none';
+  document.getElementById('phoneme-blocks').innerHTML = '';
+  document.getElementById('count-next-btn').style.display = 'none';
+
+  const count = phonemes.length;
+  const choices = new Set([count]);
+  let attempts = 0;
+  while (choices.size < 4 && attempts < 30) {
+    attempts++;
+    const offset = Math.floor(Math.random()*3)+1;
+    const c = count + (Math.random()<0.5 ? offset : -offset);
+    if (c>=1 && c<=7) choices.add(c);
+  }
+  const shuffled = [...choices].sort(()=>Math.random()-0.5);
+  const g = document.getElementById('count-choices'); g.innerHTML = '';
+  shuffled.forEach(n => {
+    const btn = document.createElement('button');
+    btn.className = 'count-btn'; btn.textContent = n;
+    btn.onclick = () => handleCountChoice(btn, n, count, phonemes);
+    g.appendChild(btn);
+  });
+}
+
+function playWordNormal() {
+  const idx = soundsOrder[countIdx % soundsOrder.length];
+  const l = LETTERS[idx];
+  speechSynthesis.cancel();
+  speak(l.heAnimal, 0.75, 1.0);
+}
+
+function handleCountChoice(btn, chosen, correct, phonemes) {
+  document.querySelectorAll('.count-btn').forEach(b => b.disabled = true);
+  const fb = document.getElementById('count-feedback');
+  if (chosen === correct) {
+    btn.classList.add('correct');
+    fb.textContent = shuffle(['🎉 נכון מאוד!','⭐ כל הכבוד!','🦁 מדהים!','🎯 פגיעה!'])[0];
+  } else {
+    btn.classList.add('wrong');
+    document.querySelectorAll('.count-btn').forEach(b => { if(parseInt(b.textContent)===correct) b.classList.add('correct'); });
+    fb.textContent = `יש ${correct} צלילים! תראה:`;
+  }
+  const bd = document.getElementById('phoneme-blocks'); bd.style.display='flex'; bd.innerHTML='';
+  phonemes.forEach((p,i) => {
+    const block = document.createElement('div'); block.className='p-block'; block.textContent=p; bd.appendChild(block);
+    setTimeout(()=>block.classList.add('show'), 120*(i+1));
+  });
+  setTimeout(()=>{ document.getElementById('count-next-btn').style.display='block'; }, phonemes.length*120+300);
+}
+
+function enterApp() {
+  const s = document.getElementById('splash'); s.classList.add('hide');
+  setTimeout(()=>s.style.display='none', 650);
+}
+</script>
 </body>
 </html>
