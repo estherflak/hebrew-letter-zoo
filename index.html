@@ -129,7 +129,7 @@
   .sounds-animal { font-family:'Fredoka One',cursive; font-size:2.6rem; color:#2d3436; direction:rtl; line-height:1; }
   .sounds-animal-en { font-size:0.85rem; font-weight:700; color:#b2bec3; margin-top:4px; }
   .sounds-instruction { font-size:1rem; font-weight:700; color:#636e72; text-align:center; line-height:1.55; margin-bottom:18px; direction:rtl; }
-  .robot-blocks { display:flex; flex-direction:row-reverse; justify-content:center; gap:10px; flex-wrap:wrap; margin-bottom:20px; min-height:70px; align-items:center; }
+  .robot-blocks { display:flex; flex-direction:row-reverse; justify-content:center; gap:10px; flex-wrap:wrap-reverse; margin-bottom:20px; min-height:70px; align-items:center; direction:rtl; }
   .r-block { font-family:'Fredoka One',cursive; font-size:1.8rem; width:64px; height:64px; border:3px solid #2d3436; border-radius:16px; display:flex; align-items:center; justify-content:center; background:white; box-shadow:3px 3px 0 #2d3436; opacity:0.25; transition:opacity 0.2s,transform 0.2s; direction:rtl; }
   .r-block.lit  { opacity:1; transform:scale(1.15) translateY(-4px); }
   .r-block.done { opacity:1; }
@@ -357,7 +357,7 @@ const LETTERS = [
   { heb:"ג", name:"גִּימֵל", sound:"ג",   emoji:"🐪", animal:"גָּמָל",    animalEn:"Gamal (Camel)",     heAnimal:"גָּמָל",      story:"הַגָּמָל רץ במדבר וצועק גְּ-גְּ-גְּ! הדבשות שלו קופצות למעלה ולמטה.", move:"דהור במקום כמו גמל — גְּ-גְּ-גְּ בכל קפיצה!" },
   { heb:"ד", name:"דָּלֶת", sound:"ד",   emoji:"🐻", animal:"דֹּב",      animalEn:"Dov (Bear)",        heAnimal:"דֹּב",        story:"הַדֹּב הענק הולך בוּם-בוּם-בוּם ואומר דְּ-דְּ-דְּ! כל היער רועד כשהוא עובר.", move:"הלך כמו דוב ענק ותרעים דְּ-דְּ-דְּ בכל צעד כבד!" },
   { heb:"ה", name:"הֵא",    sound:"ה",   emoji:"🦛", animal:"הִיפּוֹ",   animalEn:"Hipo (Hippo)",      heAnimal:"הִיפּוֹפּוֹטָם", story:"הַהִיפּוֹ תמיד מופתע — הֶ-הֶ-הֶ! הוא פותח את הפה הענק ומוציא נשימה כמו מנוע.", move:"פתח את הפה כמו הִיפּוֹ ונשוף הֶ-הֶ-הֶ!" },
-  { heb:"ו", name:"וָו",    sound:"ו",   emoji:"🦘", animal:"וַולָבִּי", animalEn:"Wallaby (וָוְ, וֹ, וּ)", heAnimal:"וַולָבִּי", story:"הַוַולָבִּי קופץ קדימה ואומר וְ-וְ-וְ! הוא כמו קנגורו קטן עם אנרגיה של רכבת.", move:"קפוץ קדימה כמו וולבי ואמור וְ-וְ-וְ בכל קפיצה!" },
+  { heb:"ו", name:"וָו",    sound:"ו",   emoji:"🦘", animal:"וַולָבִּי", animalEn:"Wallaby (ו)", heAnimal:"וַולָבִּי", story:"הַוַולָבִּי קופץ קדימה ואומר וְ-וְ-וְ! הוא כמו קנגורו קטן עם אנרגיה של רכבת.", move:"קפוץ קדימה כמו וולבי ואמור וְ-וְ-וְ בכל קפיצה!" },
   { heb:"ז", name:"זַיִן",  sound:"ז",   emoji:"🪰", animal:"זְבוּב",   animalEn:"Zvuv (Fly)",        heAnimal:"זְבוּב",      story:"הַזְּבוּב זז-זז-זז כל היום ולא עוצר! זְ-זְ-זְ-זְ — הוא המהיר ביותר בגן!", move:"טוס מסביב לחדר כמו זבוב ותאמר זְ-זְ-זְ-זְ בלי לעצור!" },
   { heb:"ח", name:"חֵית",  sound:"ח",   emoji:"🫏", animal:"חֲמוֹר",   animalEn:"Chamor (Donkey)",   heAnimal:"חֲמוֹר",      story:"הַחֲמוֹר מנקה את הגרון כל בוקר: חְ-חְ-חְ! נשמע כאילו יש לו גירוד קטן בגרון.", move:"שים יד על הגרון ואמור חְ-חְ-חְ בקול צרוד — כמו חמור מתעורר!" },
   { heb:"ט", name:"טֵית",  sound:"ט",   emoji:"🦚", animal:"טַוָּס",   animalEn:"Tavas (Peacock)",   heAnimal:"טַוָּס",      story:"הַטַּוָּס דופק בכנפיו טְ-טְ-טְ! הוא פותח את הזנב המפואר ומתגנדר.", move:"פרוס את הידיים כמו זנב טווס ותדפוק טְ-טְ-טְ בכל צעד מלכותי!" },
@@ -403,7 +403,7 @@ const SPEECH = {
   "ג":{ phoneme:"גְּ גְּ גְּ" },
   "ד":{ phoneme:"דְּ דְּ דְּ" },
   "ה":{ phoneme:"הֶ הֶ הֶ" },
-  "ו":{ phoneme:"וַו וֹ וּ" }, // ve, o, oo
+  "ו":{ phoneme:"וֶ וֹ וּ" }, // ve, o, oo
   "ז":{ phoneme:"זְ זְ זְ" },
   "ח":{ phoneme:"חְ חְ חְ" },
   "ט":{ phoneme:"טְ טְ טְ" },
@@ -531,16 +531,9 @@ function selectGame(name, btn) {
   document.getElementById('panel-quiz').style.display   = name === 'quiz'  ? 'block' : 'none';
   document.getElementById('panel-robot').style.display  = name === 'robot' ? 'block' : 'none';
   document.getElementById('panel-count').style.display  = name === 'count' ? 'block' : 'none';
+  speechSynthesis.cancel();
   if (name === 'robot') loadSoundsAnimal('robot');
   if (name === 'count') loadSoundsAnimal('count');
-  // read instruction aloud
-  const instructions = {
-    quiz:  'חידון! התאם את האות לחיה שלה.',
-    robot: 'הרובוט! תקשיב לצלילים ונסה לחבר אותם למילה.',
-    count: 'ספור צלילים! תשמע את המילה ותספור כמה צלילים יש.'
-  };
-  speechSynthesis.cancel();
-  speak(instructions[name], 0.85, 1.0);
 }
 
 // ── QUIZ GAME ──
@@ -610,14 +603,21 @@ function nextQuestion() {
     question.textContent = 'לאיזה חיה שייכת האות הזאת?';
     prompt.innerHTML = `<div class="game-big-heb">${correct.heb}</div><div style="font-family:'Fredoka One',cursive;font-size:1.1rem;color:#b2bec3;direction:rtl">${correct.name}</div>`;
     renderChoices(allChoices, i => `<span style="font-size:2.2rem">${LETTERS[i].emoji}</span><span dir="rtl">${LETTERS[i].animal}</span><span class="choice-name">${LETTERS[i].animalEn}</span>`);
+    // speak the letter name so kid knows what to match
+    setTimeout(() => speak(correct.name, 0.8, 1.0), 300);
   } else if (gameMode === 'med') {
     question.textContent = 'לאיזה אות שייכת החיה הזאת?';
     prompt.innerHTML = `<div class="game-big-emoji">${correct.emoji}</div><div class="game-animal-name" dir="rtl">${correct.animal}</div><div style="font-size:0.85rem;color:#b2bec3;font-weight:700">${correct.animalEn}</div>`;
     renderChoices(allChoices, i => `<span class="choice-heb">${LETTERS[i].heb}</span><span class="choice-name" dir="rtl">${LETTERS[i].name}</span>`);
+    // speak the animal name so kid knows what to match
+    setTimeout(() => speak(correct.heAnimal, 0.8, 1.0), 300);
   } else {
     question.textContent = 'איזו אות עושה את הצליל הזה?';
     prompt.innerHTML = `<div style="font-family:'Fredoka One',cursive;font-size:5rem;color:#2d3436;direction:rtl">${correct.sound}</div><div style="font-size:1rem;font-weight:800;color:#b2bec3;margin-top:6px">${correct.emoji} <span dir="rtl">${correct.animal}</span></div>`;
     renderChoices(allChoices, i => `<span class="choice-heb">${LETTERS[i].heb}</span><span class="choice-name" dir="rtl">${LETTERS[i].name}</span>`);
+    // speak the phoneme sound so kid knows what to match
+    const s = SPEECH[correct.heb];
+    setTimeout(() => s && speak(s.phoneme, 0.5, 1.0), 300);
   }
 }
 
@@ -698,11 +698,13 @@ function loadSoundsAnimal(mode) {
     document.getElementById('robot-animal').textContent = l.animal;
     document.getElementById('robot-animal-en').textContent = l.animalEn;
     loadRobotMode(l, phonemes);
+    setTimeout(() => speak(l.heAnimal, 0.8, 1.0), 300);
   } else {
     document.getElementById('count-emoji').textContent = l.emoji;
     document.getElementById('count-animal').textContent = l.animal;
     document.getElementById('count-animal-en').textContent = l.animalEn;
     loadCountMode(l, phonemes);
+    setTimeout(() => speak(l.heAnimal, 0.75, 1.0), 300);
   }
 }
 
