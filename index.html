@@ -465,28 +465,103 @@ loadVoices();
 if (speechSynthesis.onvoiceschanged !== undefined) speechSynthesis.onvoiceschanged = loadVoices;
 setTimeout(loadVoices, 500);
 
-function speak(text, rate, pitch, onEnd) {
-  const utt = new SpeechSynthesisUtterance(text);
-  utt.lang = 'he-IL'; utt.rate = rate; utt.pitch = pitch; utt.volume = 1.0;
-  if (heVoice) utt.voice = heVoice;
-  if (onEnd) utt.onend = onEnd;
-  speechSynthesis.speak(utt);
+// ── AUDIO BASE URL ──
+const AUDIO_BASE = 'https://raw.githubusercontent.com/estherflak/hebrew-letter-zoo/main/audio/';
+
+// Map each letter index to its audio filenames
+const AUDIO_FILES = [
+  { name:'alef.mp3',   animal:'ari.mp3',      ph:'alef_ph.mp3'   }, // א
+  { name:'bet.mp3',    animal:'barvaz.mp3',    ph:'bet_ph.mp3'    }, // ב
+  { name:'gimel.mp3',  animal:'gamal.mp3',     ph:'gimel_ph.mp3'  }, // ג
+  { name:'dalet.mp3',  animal:'dov.mp3',       ph:'dalet_ph.mp3'  }, // ד
+  { name:'he.mp3',     animal:'hipo.mp3',      ph:'he_ph.mp3'     }, // ה
+  { name:'vav.mp3',    animal:'wallaby.mp3',   ph:'vav_ph.mp3'    }, // ו
+  { name:'zayin.mp3',  animal:'zvuv.mp3',      ph:'zayin_ph.mp3'  }, // ז
+  { name:'chet.mp3',   animal:'chamor.mp3',    ph:'chet_ph.mp3'   }, // ח
+  { name:'tet.mp3',    animal:'tavas.mp3',     ph:'tet_ph.mp3'    }, // ט
+  { name:'yod.mp3',    animal:'yona.mp3',      ph:'yod_ph.mp3'    }, // י
+  { name:'kaf.mp3',    animal:'keves.mp3',     ph:'kaf_ph.mp3'    }, // כ
+  { name:'lamed.mp3',  animal:'livyatan.mp3',  ph:'lamed_ph.mp3'  }, // ל
+  { name:'mem.mp3',    animal:'meduza.mp3',    ph:'mem_ph.mp3'    }, // מ
+  { name:'nun.mp3',    animal:'nachash.mp3',   ph:'nun_ph.mp3'    }, // נ
+  { name:'samech.mp3', animal:'sus.mp3',       ph:'samech_ph.mp3' }, // ס
+  { name:'ayin.mp3',   animal:'achbar.mp3',    ph:'ayin_ph.mp3'   }, // ע
+  { name:'pe.mp3',     animal:'pil.mp3',       ph:'pe_ph.mp3'     }, // פ
+  { name:'tzadi.mp3',  animal:'tzav.mp3',      ph:'tzadi_ph.mp3'  }, // צ
+  { name:'kof.mp3',    animal:'kof_animal.mp3',ph:'kof_ph.mp3'    }, // ק
+  { name:'resh.mp3',   animal:'rakun.mp3',     ph:'resh_ph.mp3'   }, // ר
+  { name:'shin.mp3',   animal:'shual.mp3',     ph:'shin_ph.mp3'   }, // ש
+  { name:'tav.mp3',    animal:'tanin.mp3',     ph:'tav_ph.mp3'    }, // ת
+];
+
+// Play an MP3 from the audio folder; returns a Promise that resolves when done
+function playMp3(filename) {
+  return new Promise((resolve) => {
+    const audio = new Audio(AUDIO_BASE + filename);
+    audio.onended = resolve;
+    audio.onerror = resolve; // silently fall through on error
+    audio.play().catch(resolve);
+  });
 }
 
-// speak: name → phoneme (louder, slower) → animal name
-function speakLetter(idx) {
+// TTS fallback
+function ttsFallback(text, rate) {
+  return new Promise((resolve) => {
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'he-IL'; utt.rate = rate; utt.pitch = 1.0; utt.volume = 1.0;
+    if (heVoice) utt.voice = heVoice;
+    utt.onend = resolve; utt.onerror = resolve;
+    speechSynthesis.speak(utt);
+  });
+}
+
+// Play a sequence of audio clips one after another
+async function playSequence(clips) {
+  for (const clip of clips) {
+    await playMp3(clip);
+  }
+}
+
+// speak: used for game questions and sounds mode — tries MP3, falls back to TTS
+async function speak(text, rate) {
+  // we don't have a direct text→filename mapping for arbitrary text
+  // so this is TTS-only (used for game questions etc)
+  return ttsFallback(text, rate);
+}
+
+// speakLetter: plays name → phoneme → animal using MP3s
+async function speakLetter(idx) {
   const l = LETTERS[idx];
+  const af = AUDIO_FILES[idx];
   const s = SPEECH[l.heb];
-  if (!s) return;
   speechSynthesis.cancel();
+
   const btn = document.getElementById('speak-btn');
   if (btn) { btn.classList.add('speaking'); document.getElementById('speak-label').textContent = 'מקשיבים...'; }
-  const done = () => {
-    if (btn) { btn.classList.remove('speaking'); document.getElementById('speak-label').textContent = 'שמע שוב 🔊'; document.getElementById('speak-icon').textContent = '🔊'; }
-  };
-  speak(l.name, 0.8, 1.0);
-  speak(s.phoneme, 0.5, 1.0); // slower + full volume
-  speak(l.heAnimal, 0.8, 1.0, done);
+
+  await playSequence([af.name, af.ph, af.animal]);
+
+  if (btn) { btn.classList.remove('speaking'); document.getElementById('speak-label').textContent = 'שמע שוב 🔊'; }
+}
+
+// speakAnimal: just the animal name MP3
+async function speakAnimal(idx) {
+  const af = AUDIO_FILES[idx];
+  await playMp3(af.animal);
+}
+
+// speakPhoneme: just the phoneme MP3
+async function speakPhoneme(idx) {
+  const af = AUDIO_FILES[idx];
+  await playMp3(af.ph);
+}
+
+// speakJustAnimalByName: used in sounds games where we have a letter idx
+async function speakByIdx(idx, type) {
+  const af = AUDIO_FILES[idx];
+  if (type === 'animal') await playMp3(af.animal);
+  else if (type === 'ph')   await playMp3(af.ph);
+  else if (type === 'name') await playMp3(af.name);
 }
 
 function speakCurrent() { if (currentLetterIdx !== null) speakLetter(currentLetterIdx); }
@@ -603,21 +678,17 @@ function nextQuestion() {
     question.textContent = 'לאיזה חיה שייכת האות הזאת?';
     prompt.innerHTML = `<div class="game-big-heb">${correct.heb}</div><div style="font-family:'Fredoka One',cursive;font-size:1.1rem;color:#b2bec3;direction:rtl">${correct.name}</div>`;
     renderChoices(allChoices, i => `<span style="font-size:2.2rem">${LETTERS[i].emoji}</span><span dir="rtl">${LETTERS[i].animal}</span><span class="choice-name">${LETTERS[i].animalEn}</span>`);
-    // speak the letter name so kid knows what to match
-    setTimeout(() => speak(correct.name, 0.8, 1.0), 300);
+    setTimeout(() => speakByIdx(correctIdx, 'name'), 300);
   } else if (gameMode === 'med') {
     question.textContent = 'לאיזה אות שייכת החיה הזאת?';
     prompt.innerHTML = `<div class="game-big-emoji">${correct.emoji}</div><div class="game-animal-name" dir="rtl">${correct.animal}</div><div style="font-size:0.85rem;color:#b2bec3;font-weight:700">${correct.animalEn}</div>`;
     renderChoices(allChoices, i => `<span class="choice-heb">${LETTERS[i].heb}</span><span class="choice-name" dir="rtl">${LETTERS[i].name}</span>`);
-    // speak the animal name so kid knows what to match
-    setTimeout(() => speak(correct.heAnimal, 0.8, 1.0), 300);
+    setTimeout(() => speakByIdx(correctIdx, 'animal'), 300);
   } else {
     question.textContent = 'איזו אות עושה את הצליל הזה?';
     prompt.innerHTML = `<div style="font-family:'Fredoka One',cursive;font-size:5rem;color:#2d3436;direction:rtl">${correct.sound}</div><div style="font-size:1rem;font-weight:800;color:#b2bec3;margin-top:6px">${correct.emoji} <span dir="rtl">${correct.animal}</span></div>`;
     renderChoices(allChoices, i => `<span class="choice-heb">${LETTERS[i].heb}</span><span class="choice-name" dir="rtl">${LETTERS[i].name}</span>`);
-    // speak the phoneme sound so kid knows what to match
-    const s = SPEECH[correct.heb];
-    setTimeout(() => s && speak(s.phoneme, 0.5, 1.0), 300);
+    setTimeout(() => speakByIdx(correctIdx, 'ph'), 300);
   }
 }
 
@@ -698,13 +769,13 @@ function loadSoundsAnimal(mode) {
     document.getElementById('robot-animal').textContent = l.animal;
     document.getElementById('robot-animal-en').textContent = l.animalEn;
     loadRobotMode(l, phonemes);
-    setTimeout(() => speak(l.heAnimal, 0.8, 1.0), 300);
+    setTimeout(() => playMp3(AUDIO_FILES[idx].animal), 300);
   } else {
     document.getElementById('count-emoji').textContent = l.emoji;
     document.getElementById('count-animal').textContent = l.animal;
     document.getElementById('count-animal-en').textContent = l.animalEn;
     loadCountMode(l, phonemes);
-    setTimeout(() => speak(l.heAnimal, 0.75, 1.0), 300);
+    setTimeout(() => playMp3(AUDIO_FILES[idx].animal), 300);
   }
 }
 
@@ -727,32 +798,33 @@ function loadRobotMode(l, phonemes) {
   document.getElementById('robot-next-btn').style.display = 'none';
 }
 
-function playRobot() {
+async function playRobot() {
   const idx = soundsOrder[robotIdx % soundsOrder.length];
-  const l = LETTERS[idx];
-  const phonemes = PHONEMES[l.heAnimal] || [l.heAnimal];
-  speechSynthesis.cancel();
+  const phonemes = PHONEMES[LETTERS[idx].heAnimal] || [LETTERS[idx].heAnimal];
+  // Build per-phoneme MP3 filenames: ph file plays for each block
+  // We play the single ph file per letter, one play per block step
+  const phFile = AUDIO_FILES[idx].ph;
+
   document.getElementById('robot-play-btn').disabled = true;
 
-  phonemes.forEach((p, i) => {
-    setTimeout(() => {
-      phonemes.forEach((_,j) => {
-        const b = document.getElementById('rb-'+j);
-        if (b) { b.classList.remove('lit'); if(j<i) b.classList.add('done'); }
-      });
-      const cur = document.getElementById('rb-'+i);
-      if (cur) cur.classList.add('lit');
-      // speak the phoneme NOT the letter name — use a vowelled syllable
-      speak(p, 0.5, 1.0);
-      if (i === phonemes.length-1) {
-        setTimeout(() => {
-          phonemes.forEach((_,j) => { const b=document.getElementById('rb-'+j); if(b){b.classList.remove('lit');b.classList.add('done');} });
-          document.getElementById('robot-play-btn').disabled = false;
-          document.getElementById('robot-reveal-btn').style.display = 'inline-block';
-        }, robotSpeed);
-      }
-    }, i * robotSpeed);
-  });
+  for (let i = 0; i < phonemes.length; i++) {
+    // dim previous, light current
+    phonemes.forEach((_,j) => {
+      const b = document.getElementById('rb-'+j);
+      if (b) { b.classList.remove('lit'); if(j<i) b.classList.add('done'); }
+    });
+    const cur = document.getElementById('rb-'+i);
+    if (cur) cur.classList.add('lit');
+
+    // play the phoneme MP3 (same file repeated = the phoneme sound for this letter)
+    await playMp3(phFile);
+    await new Promise(r => setTimeout(r, 200)); // small gap between sounds
+  }
+
+  // all done — mark all as done
+  phonemes.forEach((_,j) => { const b=document.getElementById('rb-'+j); if(b){b.classList.remove('lit');b.classList.add('done');} });
+  document.getElementById('robot-play-btn').disabled = false;
+  document.getElementById('robot-reveal-btn').style.display = 'inline-block';
 }
 
 function revealWord() {
@@ -760,7 +832,7 @@ function revealWord() {
   const l = LETTERS[idx];
   const ans = document.getElementById('robot-answer');
   ans.textContent = l.emoji + ' ' + l.heAnimal + '!'; ans.style.display = 'block';
-  speak(l.heAnimal, 0.8, 1.0);
+  playMp3(AUDIO_FILES[idx].animal);
   document.getElementById('robot-next-btn').style.display = 'block';
   document.getElementById('robot-reveal-btn').style.display = 'none';
 }
@@ -794,9 +866,7 @@ function loadCountMode(l, phonemes) {
 
 function playWordNormal() {
   const idx = soundsOrder[countIdx % soundsOrder.length];
-  const l = LETTERS[idx];
-  speechSynthesis.cancel();
-  speak(l.heAnimal, 0.75, 1.0);
+  playMp3(AUDIO_FILES[idx].animal);
 }
 
 function handleCountChoice(btn, chosen, correct, phonemes) {
