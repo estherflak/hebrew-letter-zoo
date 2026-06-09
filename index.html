@@ -678,17 +678,34 @@ function nextQuestion() {
     question.textContent = 'לאיזה חיה שייכת האות הזאת?';
     prompt.innerHTML = `<div class="game-big-heb">${correct.heb}</div><div style="font-family:'Fredoka One',cursive;font-size:1.1rem;color:#b2bec3;direction:rtl">${correct.name}</div>`;
     renderChoices(allChoices, i => `<span style="font-size:2.2rem">${LETTERS[i].emoji}</span><span dir="rtl">${LETTERS[i].animal}</span><span class="choice-name">${LETTERS[i].animalEn}</span>`);
-    setTimeout(() => speakByIdx(correctIdx, 'name'), 300);
+    // speak: question → letter name → all 4 animal choices
+    setTimeout(async () => {
+      await ttsFallback('לאיזה חיה שייכת האות הזאת?', 0.85);
+      await playMp3(AUDIO_FILES[correctIdx].name);
+      for (const idx of allChoices) await playMp3(AUDIO_FILES[idx].animal);
+    }, 300);
+
   } else if (gameMode === 'med') {
     question.textContent = 'לאיזה אות שייכת החיה הזאת?';
     prompt.innerHTML = `<div class="game-big-emoji">${correct.emoji}</div><div class="game-animal-name" dir="rtl">${correct.animal}</div><div style="font-size:0.85rem;color:#b2bec3;font-weight:700">${correct.animalEn}</div>`;
     renderChoices(allChoices, i => `<span class="choice-heb">${LETTERS[i].heb}</span><span class="choice-name" dir="rtl">${LETTERS[i].name}</span>`);
-    setTimeout(() => speakByIdx(correctIdx, 'animal'), 300);
+    // speak: question → animal name → all 4 letter names
+    setTimeout(async () => {
+      await ttsFallback('לאיזה אות שייכת החיה הזאת?', 0.85);
+      await playMp3(AUDIO_FILES[correctIdx].animal);
+      for (const idx of allChoices) await playMp3(AUDIO_FILES[idx].name);
+    }, 300);
+
   } else {
     question.textContent = 'איזו אות עושה את הצליל הזה?';
     prompt.innerHTML = `<div style="font-family:'Fredoka One',cursive;font-size:5rem;color:#2d3436;direction:rtl">${correct.sound}</div><div style="font-size:1rem;font-weight:800;color:#b2bec3;margin-top:6px">${correct.emoji} <span dir="rtl">${correct.animal}</span></div>`;
     renderChoices(allChoices, i => `<span class="choice-heb">${LETTERS[i].heb}</span><span class="choice-name" dir="rtl">${LETTERS[i].name}</span>`);
-    setTimeout(() => speakByIdx(correctIdx, 'ph'), 300);
+    // speak: question → phoneme → all 4 letter names
+    setTimeout(async () => {
+      await ttsFallback('איזו אות עושה את הצליל הזה?', 0.85);
+      await playMp3(AUDIO_FILES[correctIdx].ph);
+      for (const idx of allChoices) await playMp3(AUDIO_FILES[idx].name);
+    }, 300);
   }
 }
 
